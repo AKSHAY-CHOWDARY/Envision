@@ -8,6 +8,8 @@ import { SignedIn } from "@clerk/clerk-react";
 import ProtectPage from "./components/ProtectedRoute.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import ResumeGenerator from "./pages/ResumeGenerator.jsx";
+import JobSelection from './components/JobSelection';
+import Quiz from './components/Quiz';
 
 function App() {
 	return (
@@ -18,6 +20,8 @@ function App() {
 				<Route path="/jobs" element={<ProtectPage><Jobs /></ProtectPage>} />
 				<Route path="/dashboard" element={<ProtectPage><Dashboard /></ProtectPage>} />
 				<Route path="/resume" element={<ProtectPage><ResumeGenerator /></ProtectPage>} />
+				<Route path="/quiz" element={<JobSelection />} />
+				<Route path="/quiz/:roleId" element={<ProtectPage><Quiz /></ProtectPage>} />
 			</Routes>
 			<SignedIn>
 				<ChatBot/>
