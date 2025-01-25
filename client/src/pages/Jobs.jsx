@@ -307,53 +307,12 @@ function Jobs() {
                   </select>
                 </div>
 
-                {/* Job cards
-                <div className="space-y-4">
-                  {JobsList.map((job) => (
-                    <div key={job.id} className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                      <div className="flex items-start justify-between">
-                        <div className="flex gap-4">
-                          <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
-                            <Briefcase className="w-6 h-6 text-gray-500" />
-                          </div>
-                          <div>
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="text-xs text-teal-600 bg-teal-50 px-2 py-0.5 rounded">
-                                {job.postedAt}
-                              </span>
-                            </div>
-                            <h3 className="text-lg font-semibold text-gray-900">{job.title}</h3>
-                            <p className="text-gray-600">{job.company}</p>
-                            <div className="mt-2 flex flex-wrap gap-4 text-sm text-gray-500">
-                              <span className="flex items-center gap-1">
-                                <MapPin className="w-4 h-4" />
-                                {job.location}
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <Clock className="w-4 h-4" />
-                                {job.type}
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <DollarSign className="w-4 h-4" />
-                                {job.salary}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <button className="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600 transition-colors">
-                          Job Details
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div> */}
-
                 <JobList jobs={JobsList} />
 
                 {/* Pagination */}
                 <div className="flex justify-center mt-8">
                   <nav className="flex items-center gap-2">
-                    <button className="w-8 h-8 flex items-center justify-center border rounded-md bg-teal-500 text-white">
+                    <button className="w-8 h-8 flex items-center justify-center border rounded-md bg-indigo-500 text-white">
                       1
                     </button>
                     <button className="w-8 h-8 flex items-center justify-center border rounded-md hover:bg-gray-50">

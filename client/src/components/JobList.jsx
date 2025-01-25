@@ -21,7 +21,7 @@ const JobCard = ({ job }) => (
           </div>
         </div>
       </div>
-      <a href={job.job_link} className="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600 transition-colors">
+      <a href={job.job_link} className="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-600 transition-colors">
         Job Details
       </a>
     </div>

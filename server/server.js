@@ -15,9 +15,13 @@ mongoClient
     .connect(MONGO_URI)
     .then((client) => {
         const dbObj = client.db(DB_NAME);
-        const usersCollection = dbObj.collection("usersCollection");        
+        const usersCollection = dbObj.collection("usersCollection");  
+        const jobsCollection = dbObj.collection("jobsCollection");     
+        const linkedInCollection = dbObj.collection("linkedInCollection");
 
         app.set("usersCollection", usersCollection);
+        app.set("jobsCollection", jobsCollection);
+        app.set("linkedInCollection", linkedInCollection);
 
         console.log("Connection to database successful");
     })
@@ -29,14 +33,15 @@ app.use(express.json());
 
 app.use(cors());
 
-
 // Serve static files from the frontend
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
 // API routes
 const userApp = require("./apis/user-api");
+const adminApp = require("./apis/admin-api");
 
 app.use("/user-api", userApp);
+app.use('/admin-api',adminApp);
 
 // Global error handler
 app.use((err, req, res, next) => {
@@ -48,3 +53,4 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log(`Server started at port ${PORT}`);
 });
+
