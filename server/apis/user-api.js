@@ -37,7 +37,7 @@ userApp.post(
 //GET JOBS DATA FROM DB
 // IM USING POST BECAUSE IT WILL HELP YOU TO IMPLEMENT SEARCH AND OTHER FILTERS FUNCTIONALITY
 userApp.post('/jobs', expressAsyncHandler(async (req, res) => {
-	//let filters = req.body; take when implementing filters
+	let filters = req.body; 
 	try {
 		let response = await jobsObj.find().toArray()
 		return res.send({ message: "All Jobs", payload: response });
