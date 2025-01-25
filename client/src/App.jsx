@@ -3,10 +3,12 @@ import Navigation from "./components/Navigation.jsx";
 import { Routes, Route } from "react-router";
 import Landing from "./pages/Landing.jsx";
 import Jobs from "./pages/Jobs.jsx";
-import ChatBot from "./components/Chatbot.jsx";
+import ChatBot from "./components/ChatBot.jsx";
 import { SignedIn } from "@clerk/clerk-react";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import ProtectPage from "./components/ProtectedRoute.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+
 function App() {
 	return (
 		<div>
@@ -14,6 +16,7 @@ function App() {
 			<Routes>
 				<Route path="/" element={<Landing />} />
 				<Route path="/jobs" element={<ProtectPage><Jobs /></ProtectPage>} />
+				<Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
 			</Routes>
 			<SignedIn>
 				<ChatBot/>

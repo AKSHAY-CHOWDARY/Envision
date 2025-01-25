@@ -28,6 +28,7 @@ const Navigation = () => {
           <p className='text-white'>{user?.fullName}</p>
           <div className='flex space-x-4 '>
           <button className='font-semibold text-white text-lg cursor-pointer hover:text-indigo-200' onClick={()=>navigate('/jobs')} >Jobs</button>
+          <button className='font-semibold text-white text-lg cursor-pointer hover:text-indigo-200' onClick={()=>navigate('/dashboard')} >Dashboard</button>
           <UserButton />
           </div>
         </div>
