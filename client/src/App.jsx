@@ -10,6 +10,8 @@ import Dashboard from "./pages/Dashboard.jsx";
 import ResumeGenerator from "./pages/ResumeGenerator.jsx";
 import JobSelection from './components/JobSelection';
 import Quiz from './components/Quiz';
+import JobRoles from "./pages/JobRoles.jsx";
+import RoadMap from "./pages/RoadMap.jsx";
 
 function App() {
 	return (
@@ -22,6 +24,8 @@ function App() {
 				<Route path="/resume" element={<ProtectPage><ResumeGenerator /></ProtectPage>} />
 				<Route path="/quiz" element={<JobSelection />} />
 				<Route path="/quiz/:roleId" element={<ProtectPage><Quiz /></ProtectPage>} />
+				<Route path="/jobrole" element={<ProtectPage><JobRoles/></ProtectPage>} />
+				<Route path="/jobrole/:role/roadmap" element={<RoadMap />} />
 			</Routes>
 			<SignedIn>
 				<ChatBot/>
