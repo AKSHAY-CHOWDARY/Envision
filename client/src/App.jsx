@@ -21,7 +21,7 @@ function App() {
 				<Route path="/dashboard" element={<ProtectPage><Dashboard /></ProtectPage>} />
 				<Route path="/resume" element={<ProtectPage><ResumeGenerator /></ProtectPage>} />
 				<Route path="/quiz" element={<JobSelection />} />
-				<Route path="/quiz/:roleId" element={<Quiz />} />
+				<Route path="/quiz/:roleId" element={<ProtectPage><Quiz /></ProtectPage>} />
 			</Routes>
 			<SignedIn>
 				<ChatBot/>
