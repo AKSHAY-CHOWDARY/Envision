@@ -1,0 +1,25 @@
+import "./App.css";
+import Navigation from "./components/Navigation.jsx";
+import { Routes, Route } from "react-router";
+import Landing from "./pages/Landing.jsx";
+import Jobs from "./pages/Jobs.jsx";
+import ChatBot from "./components/Chatbot.jsx";
+import { SignedIn } from "@clerk/clerk-react";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import ProtectPage from "./components/ProtectedRoute.jsx";
+function App() {
+	return (
+		<div>
+			<Navigation />
+			<Routes>
+				<Route path="/" element={<Landing />} />
+				<Route path="/jobs" element={<ProtectPage><Jobs /></ProtectPage>} />
+			</Routes>
+			<SignedIn>
+				<ChatBot/>
+			</SignedIn>
+		</div>
+	);
+}
+
+export default App;
