@@ -10,11 +10,12 @@ require("dotenv").config();
 //body parser
 userApp.use(exp.json());
 
-let userCollectionObj, linkedInObj;
+let userCollectionObj, linkedInObj,jobsObj;
 
 userApp.use((req, res, next) => {
 	userCollectionObj = req.app.get("usersCollection");
 	linkedInObj = req.app.get("linkedInCollection");
+	jobsObj = req.app.get("jobsCollection");
 	next();
 });
 
@@ -32,6 +33,19 @@ userApp.post(
 		}
 	})
 );
+
+//GET JOBS DATA FROM DB
+// IM USING POST BECAUSE IT WILL HELP YOU TO IMPLEMENT SEARCH AND OTHER FILTERS FUNCTIONALITY
+userApp.post('/jobs', expressAsyncHandler(async (req, res) => {
+	//let filters = req.body; take when implementing filters
+	try {
+		let response = await jobsObj.find().toArray()
+		return res.send({ message: "All Jobs", payload: response });
+	} catch (err) {
+		console.log(err);
+		return res.send({ message: `Jobs not created ${err}` });
+	}
+}));
 
 //Send users LinkedIn data if present in DB
 userApp.get(

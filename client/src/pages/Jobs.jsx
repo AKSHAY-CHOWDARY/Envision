@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, MapPin, Clock, DollarSign, ChevronRight, Briefcase } from 'lucide-react';
-import { JobsList } from '../components/StaticJobs';
 import JobList from '../components/JobList';
+import axios from 'axios';
 
 function Jobs() {
   const [jobs, setJobs] = useState([]);
@@ -53,15 +53,14 @@ function Jobs() {
     try {
       setLoading(true);
       // Replace with your actual API endpoint
-      const response = await fetch('YOUR_API_ENDPOINT', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(filters),
-      });
-      const data = await response.json();
-      setJobs(data);
+
+      const response = await axios.post('http://localhost:5000/user-api/jobs', {filters});
+      console.log(filters);
+      if(response.data.message === "All Jobs"){
+        setJobs(response.data.payload);
+      }else{
+        setError('Failed to fetch jobs');
+      }
       // Update showing results count
       setShowingResults({
         start: 1,
@@ -307,7 +306,7 @@ function Jobs() {
                   </select>
                 </div>
 
-                <JobList jobs={JobsList} />
+                <JobList jobs={jobs} />
 
                 {/* Pagination */}
                 <div className="flex justify-center mt-8">
