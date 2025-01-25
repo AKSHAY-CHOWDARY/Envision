@@ -17,13 +17,16 @@ const Navigation = () => {
     <div className='bg-indigo-700 py-4 w-full'>
       {/* Show SignInButton if the user is signed out */}
 			<SignedOut>
+
 				<div className='flex space-x-3 justify-end px-4'>
           <button className='font-semibold px-4 bg-white rounded-md py-2' ><SignInButton/></button>
           <button className='font-semibold px-4 bg-white rounded-md py-2' ><SignUpButton/></button>
 				</div>
+        
 			</SignedOut>
       {/* Show UserButton if the user is signed in */}
       <SignedIn>
+
         <div className='flex justify-between px-5 space-x-4'>
           <p className='text-white'>{user?.fullName}</p>
           <div className='flex space-x-4 '>
