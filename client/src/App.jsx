@@ -12,13 +12,12 @@ import ResumeGenerator from "./pages/ResumeGenerator.jsx";
 function App() {
 	return (
 		<div>
-			<Navigation />
-			<Routes>
+			<Navigation/>
+			<Routes> 
 				<Route path="/" element={<Landing />} />
 				<Route path="/jobs" element={<ProtectPage><Jobs /></ProtectPage>} />
 				<Route path="/dashboard" element={<ProtectPage><Dashboard /></ProtectPage>} />
 				<Route path="/resume" element={<ProtectPage><ResumeGenerator /></ProtectPage>} />
-
 			</Routes>
 			<SignedIn>
 				<ChatBot/>
