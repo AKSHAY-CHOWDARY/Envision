@@ -62,7 +62,13 @@ def analyze_resume():
             You are a skilled ATS (Applicant Tracking System) scanner with a deep understanding of data science and ATS functionality, 
             your task is to evaluate the resume against the provided job description. Give me the percentage of match if the resume matches
             the job description. First the output should come as percentage and then keywords missing and last final thoughts.
+        """,
+        "coverletter": """  
+          You are an expert in crafting professional and tailored cover letters based on the provided job description and resume. 
+          Carefully analyze the job description and the resume to create a polished and compelling cover letter that aligns with the role’s requirements. Ensure the content is professional, concise, and free from grammatical errors.
+          
         """
+        
     }
 
     # Handle file upload

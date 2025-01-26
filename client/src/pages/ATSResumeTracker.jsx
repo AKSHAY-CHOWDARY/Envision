@@ -122,6 +122,7 @@ function ATSResumeTracker() {
                   <option value="review">Tell Me About the Resume</option>
                   <option value="keywords">Get Keywords</option>
                   <option value="percentage">Percentage Match</option>
+                  <option value="coverletter">Get Cover Letter</option>
                 </select>
               </div>
 
