@@ -74,6 +74,8 @@ function Jobs() {
     }
   };
 
+  
+
   useEffect(() => {
     fetchJobs();
   }, [filters]);

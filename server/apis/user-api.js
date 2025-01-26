@@ -7,11 +7,18 @@ const fs = require("fs");
 const profile_key = process.env.LINKEDIN_PROFILE_API_KEY;
 const { exec } = require("child_process");
 const bodyParser = require("body-parser");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+
 require("dotenv").config();
 //body parser
 userApp.use(exp.json());
 
 let userCollectionObj, linkedInObj,jobsObj;
+
+
+const genAI = new GoogleGenerativeAI("AIzaSyCu1NGjpoWrseHN2JMBJ2O_LEwt-2CcaGI");
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 userApp.use((req, res, next) => {
 	userCollectionObj = req.app.get("usersCollection");
@@ -40,7 +47,7 @@ userApp.post(
 //GET JOBS DATA FROM DB
 // IM USING POST BECAUSE IT WILL HELP YOU TO IMPLEMENT SEARCH AND OTHER FILTERS FUNCTIONALITY
 userApp.post('/jobs', expressAsyncHandler(async (req, res) => {
-	//let filters = req.body; take when implementing filters
+	let filters = req.body; 
 	try {
 		let response = await jobsObj.find({job_position:"Software Engineer"}).toArray()
 		return res.send({ message: "All Jobs", payload: response });
@@ -140,108 +147,72 @@ userApp.post(
 	})
 );
 
-
-// Resume generation endpoint
-userApp.post("/generate-resume", (req, res) => {
+userApp.post("/generate-resume", expressAsyncHandler(async (req, res) => {
     const { userData, additionalData } = req.body;
 
-    // Extracting the necessary data from the LinkedIn profile object
-    const fullName = userData.fullName;
-    const firstName = userData.first_name;
-    const lastName = userData.last_name;
-    const headline = userData.headline;
-    const location = userData.location.trim();
-    const about = userData.about;
-    const connections = userData.connections;
-    const followers = userData.followers;
-    const profilePhoto = userData.profile_photo;
-    const backgroundCoverImage = userData.background_cover_image_url;
-    const education = userData.education && userData.education[0] ? userData.education[0].degree : 'N/A';
-    
-    const projects = additionalData.projects || 'N/A';
-    const courses = additionalData.courses || 'N/A';
-    const certifications = additionalData.certifications || 'N/A';
-    const skills = additionalData.skills || 'N/A';
-    const extracurriculars = additionalData.extracurriculars || 'N/A';
+    // Construct the prompt for generating the resume content
+    const prompt = `
+        enhance the below information provided for resume:
+        Name: ${userData.fullName}
+        Headline: ${userData.headline}
+        Location: ${userData.location}
+        About: ${userData.about}
+        Skills: ${additionalData.skills}
+        Education: ${userData.education}
+        Projects: ${additionalData.projects}
+        Courses: ${additionalData.courses}
+        Certifications: ${additionalData.certifications}
+        Extracurriculars: ${additionalData.extracurriculars}
+    `;
 
-    const latexTemplate = `
-    \\documentclass[a4paper, 12pt]{article}
+    try {
+        // Assuming the Gemini model has a 'generate()' or equivalent method
+        const aiResponse = await model.generateContent(
+            prompt
+            // Adjust based on the desired response length
+        );
+
+        const resumeContent = aiResponse.response.text();  // Assuming the text is in 'text' field
+		console.log(resumeContent);
+        // Use the generated content in your LaTeX resume template
+        const latexTemplate = `
+        \\documentclass[a4paper, 12pt]{article}
     \\usepackage{graphicx}
     \\usepackage{hyperref}
     \\begin{document}
 
     % Title Section
     \\title{\\textbf{Resume}}
-    \\author{\\textbf{${fullName}}}
+    \\author{\\textbf{${userData.fullName}}}
     \\date{}
     \\maketitle
 
-    % Profile Image Section
-    % \\begin{figure}[h!]
-    %     \\centering
-    %     \\includegraphics[width=0.2\\textwidth]{${profilePhoto}}
-    % \\end{figure}
-
-    % Personal Details Section
-    \\section*{Personal Information}
-    \\begin{itemize}
-        \\item \\textbf{Full Name:} ${fullName}
-        \\item \\textbf{Headline:} ${headline}
-        \\item \\textbf{Location:} ${location}
-        \\item \\textbf{About Me:} ${about}
-        \\item \\textbf{Connections:} ${connections}
-        \\item \\textbf{Followers:} ${followers}
-    \\end{itemize}
-
-    % Education Section
-    \\section*{Education}
-    \\begin{itemize}
-        \\item \\textbf{Degree:} ${education}
-    \\end{itemize}
-
-    % Projects Section
-    \\section*{Projects}
-    \\begin{itemize}
-        \\item ${projects}
-    \\end{itemize}
-
-    % Courses and Certifications Section
-    \\section*{Courses and Certifications}
-    \\begin{itemize}
-        \\item ${courses}
-        \\item ${certifications}
-    \\end{itemize}
-
-    % Skills Section
-    \\section*{Skills}
-    \\begin{itemize}
-        \\item ${skills}
-    \\end{itemize}
-
-    % Extracurriculars Section
-    \\section*{Extracurriculars}
-    \\begin{itemize}
-        \\item ${extracurriculars}
-    \\end{itemize}
-
+    ${resumeContent} 
+   
     % Closing
-    \\end{document}
-    `;
+    \\end{document}`
+    ;
 
-  
-    fs.writeFileSync("resume.tex", latexTemplate);
-  
-    // Compile LaTeX to PDF
-    exec("pdflatex resume.tex", (err, stdout, stderr) => {
-      if (err) {
-        console.error("Error generating PDF:", stderr);  // <-- Log the error
-        return res.status(500).json({ error: "Error generating resume.", details: stderr });
-      }
-      
-      const pdf = fs.readFileSync("resume.pdf");
-      res.contentType("application/pdf").send(pdf);
-    });
-  });
 
+
+        fs.writeFileSync("resume.tex", latexTemplate);
+
+		  // Compile LaTeX to PDF
+		  exec("pdflatex resume.tex", (err, stdout, stderr) => {
+			if (err) {
+			  console.error("Error generating PDF:", stderr);  // <-- Log the error
+			  return res.status(500).json({ error: "Error generating resume.", details: stderr });
+			}
+			
+			const pdf = fs.readFileSync("resume.pdf");
+			res.contentType("application/pdf").send(pdf);
+		  });
+		
+
+    } catch (err) {
+        console.error("Error generating resume:", err);
+        return res.status(500).json({ error: "Error generating resume.", details: err });
+    }
+}));
 
 module.exports = userApp;

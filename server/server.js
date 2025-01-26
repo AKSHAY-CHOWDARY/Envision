@@ -18,10 +18,12 @@ mongoClient
         const usersCollection = dbObj.collection("usersCollection");  
         const jobsCollection = dbObj.collection("jobsCollection");     
         const linkedInCollection = dbObj.collection("linkedInCollection");
+        const jobTrackingCollection = dbObj.collection("jobTrackingCollection");
 
         app.set("usersCollection", usersCollection);
         app.set("jobsCollection", jobsCollection);
         app.set("linkedInCollection", linkedInCollection);
+        app.set("jobTrackingCollection", jobTrackingCollection);
 
         console.log("Connection to database successful");
     })
@@ -39,9 +41,11 @@ app.use(express.static(path.join(__dirname, "../client/dist")));
 // API routes
 const userApp = require("./apis/user-api");
 const adminApp = require("./apis/admin-api");
+const jobApp = require("./apis/job-api");
 
 app.use("/user-api", userApp);
 app.use('/admin-api',adminApp);
+app.use("/job-api", jobApp);
 
 // Global error handler
 app.use((err, req, res, next) => {

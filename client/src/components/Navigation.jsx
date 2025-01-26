@@ -28,11 +28,16 @@ const Navigation = () => {
       <SignedIn>
 
         <div className='flex justify-between px-5 space-x-4'>
-          <p className='text-white'>{user?.fullName}</p>
+          {/* <img src='./env_logo.png' className='rounded-full' width={50} alt='LOGO'></img> */}
+          <p className='font-bold custom-font text-3xl cursor-pointer text-white'>Envision</p>
           <div className='flex space-x-4 '>
+          <button className='font-semibold text-white text-lg cursor-pointer hover:text-indigo-200' onClick={()=>navigate('/')} >Home</button>
+          <button className='font-semibold text-white text-lg cursor-pointer hover:text-indigo-200' onClick={()=>navigate('/jobrole')} >Roadmaps</button>
           <button className='font-semibold text-white text-lg cursor-pointer hover:text-indigo-200' onClick={()=>navigate('/jobs')} >Jobs</button>
+          <button className='font-semibold text-white text-lg cursor-pointer hover:text-indigo-200' onClick={()=>navigate('/jobsTracker')} >Job Tracker</button>
           <button className='font-semibold text-white text-lg cursor-pointer hover:text-indigo-200' onClick={()=>navigate('/dashboard')} >Dashboard</button>
           <button className='font-semibold text-white text-lg cursor-pointer hover:text-indigo-200' onClick={()=>navigate('/quiz')} >Quiz</button>
+          <button className='font-semibold text-white text-lg cursor-pointer hover:text-indigo-200' onClick={()=>navigate('/ats')} >Resume Tracker</button>
           <UserButton />
           </div>
         </div>

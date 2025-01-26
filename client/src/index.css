@@ -1,1 +1,6 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+
+.custom-font {
+  font-family: 'Righteous', cursive;
+}

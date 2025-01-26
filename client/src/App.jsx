@@ -8,8 +8,12 @@ import { SignedIn } from "@clerk/clerk-react";
 import ProtectPage from "./components/ProtectedRoute.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import ResumeGenerator from "./pages/ResumeGenerator.jsx";
-import JobSelection from './components/JobSelection';
-import Quiz from './components/Quiz';
+import JobSelection from './pages/JobSelection.jsx';
+import Quiz from './pages/Quiz.jsx';
+import JobTracker from "./pages/JobTracker.jsx";
+import JobRoles from "./pages/JobRoles.jsx";
+import RoadMap from "./pages/RoadMap.jsx";
+import ATSResumeTracker from "./pages/ATSResumeTracker.jsx";
 
 function App() {
 	return (
@@ -18,10 +22,14 @@ function App() {
 			<Routes> 
 				<Route path="/" element={<Landing />} />
 				<Route path="/jobs" element={<ProtectPage><Jobs /></ProtectPage>} />
+				<Route path="/jobsTracker" element={<ProtectPage><JobTracker /></ProtectPage>} />
 				<Route path="/dashboard" element={<ProtectPage><Dashboard /></ProtectPage>} />
 				<Route path="/resume" element={<ProtectPage><ResumeGenerator /></ProtectPage>} />
-				<Route path="/quiz" element={<JobSelection />} />
+				<Route path="/quiz" element={<ProtectPage><JobSelection/></ProtectPage>} />
 				<Route path="/quiz/:roleId" element={<ProtectPage><Quiz /></ProtectPage>} />
+				<Route path="/jobrole" element={<ProtectPage><JobRoles/></ProtectPage>} />
+				<Route path="/jobrole/:role/roadmap" element={<RoadMap />} />
+				<Route path="/ats" element={<ATSResumeTracker />} />
 			</Routes>
 			<SignedIn>
 				<ChatBot/>
