@@ -13,6 +13,7 @@ import Quiz from './pages/Quiz.jsx';
 import JobTracker from "./pages/JobTracker.jsx";
 import JobRoles from "./pages/JobRoles.jsx";
 import RoadMap from "./pages/RoadMap.jsx";
+import ATSResumeTracker from "./pages/ATSResumeTracker.jsx";
 
 function App() {
 	return (
@@ -28,6 +29,7 @@ function App() {
 				<Route path="/quiz/:roleId" element={<ProtectPage><Quiz /></ProtectPage>} />
 				<Route path="/jobrole" element={<ProtectPage><JobRoles/></ProtectPage>} />
 				<Route path="/jobrole/:role/roadmap" element={<RoadMap />} />
+				<Route path="/ats" element={<ATSResumeTracker />} />
 			</Routes>
 			<SignedIn>
 				<ChatBot/>
