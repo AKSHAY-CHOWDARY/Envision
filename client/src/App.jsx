@@ -11,6 +11,8 @@ import ResumeGenerator from "./pages/ResumeGenerator.jsx";
 import JobSelection from './pages/JobSelection.jsx';
 import Quiz from './pages/Quiz.jsx';
 import JobTracker from "./pages/JobTracker.jsx";
+import JobRoles from "./pages/JobRoles.jsx";
+import RoadMap from "./pages/RoadMap.jsx";
 
 function App() {
 	return (
@@ -24,6 +26,8 @@ function App() {
 				<Route path="/resume" element={<ProtectPage><ResumeGenerator /></ProtectPage>} />
 				<Route path="/quiz" element={<ProtectPage><JobSelection/></ProtectPage>} />
 				<Route path="/quiz/:roleId" element={<ProtectPage><Quiz /></ProtectPage>} />
+				<Route path="/jobrole" element={<ProtectPage><JobRoles/></ProtectPage>} />
+				<Route path="/jobrole/:role/roadmap" element={<RoadMap />} />
 			</Routes>
 			<SignedIn>
 				<ChatBot/>
