@@ -40,6 +40,7 @@ jobApp.post(
         try {
             const { userId, jobId,status} = req.body;
             const job = await jobsObj.findOne({ job_id: jobId });
+            delete job._id;
             const response = await jobsTrackerObj.insertOne({ userId:userId, ...job, status:status });
             return res.status(201).send({ message: "Job added", payload: {userId:userId, ...job, status:status } });
         } catch (err) {
