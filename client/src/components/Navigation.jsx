@@ -32,6 +32,7 @@ const Navigation = () => {
           <p className='font-bold custom-font text-3xl cursor-pointer text-white'>Envision</p>
           <div className='flex space-x-4 '>
           <button className='font-semibold text-white text-lg cursor-pointer hover:text-indigo-200' onClick={()=>navigate('/')} >Home</button>
+          <button className='font-semibold text-white text-lg cursor-pointer hover:text-indigo-200' onClick={()=>navigate('/jobrole')} >Roadmaps</button>
           <button className='font-semibold text-white text-lg cursor-pointer hover:text-indigo-200' onClick={()=>navigate('/jobs')} >Jobs</button>
           <button className='font-semibold text-white text-lg cursor-pointer hover:text-indigo-200' onClick={()=>navigate('/jobsTracker')} >Job Tracker</button>
           <button className='font-semibold text-white text-lg cursor-pointer hover:text-indigo-200' onClick={()=>navigate('/dashboard')} >Dashboard</button>
