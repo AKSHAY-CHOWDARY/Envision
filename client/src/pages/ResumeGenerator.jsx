@@ -9,6 +9,14 @@ const ResumeGenerator = () => {
   const [userData, setUserData] = useState(null);
   const [resumePdf, setResumePdf] = useState(null);
   const [isLinkedInFetched, setIsLinkedInFetched] = useState(false);
+  const [additionalData, setAdditionalData] = useState({
+    projects: "",
+    courses: "",
+    certifications: "",
+    skills: "",
+    extracurriculars: "",
+  });
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     const fetchLinkedInData = async () => {
@@ -17,14 +25,13 @@ const ResumeGenerator = () => {
         const res = await axios.get(`http://localhost:5000/user-api/linkedIn/${userId}`);
         if (res.data.payload) {
           setUserData(res.data.payload);
-          console.log(userData);
           setIsLinkedInFetched(true);
         }
       } catch (err) {
         console.error("Error fetching LinkedIn data:", err);
       }
     };
-    
+
     fetchLinkedInData();
   }, [userId]);
 
@@ -46,10 +53,19 @@ const ResumeGenerator = () => {
     }
   };
 
+  const handleAdditionalDataChange = (e) => {
+    const { name, value } = e.target;
+    setAdditionalData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   const generateResume = async () => {
     if (!userData) return alert("User data not loaded yet.");
     try {
-      const res = await axios.post("http://localhost:5000/user-api/generate-resume", { userData }, { responseType: "arraybuffer" });
+      console.log(userData);
+      const res = await axios.post("http://localhost:5000/user-api/generate-resume", { userData, additionalData }, { responseType: "arraybuffer" });
       const blob = new Blob([res.data], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       setResumePdf(url);
@@ -78,6 +94,54 @@ const ResumeGenerator = () => {
         >
           Fetch LinkedIn Data
         </button>
+
+        <button
+          onClick={() => setShowForm(!showForm)}
+          className="w-full px-4 py-2 bg-yellow-600 hover:bg-yellow-700 rounded-md transition mb-4"
+        >
+          Enter Additional Data
+        </button>
+
+        {showForm && (
+          <div className="bg-gray-700 p-4 rounded-md">
+            <div>
+              <label className="block text-sm mb-2">Projects</label>
+              <textarea
+                name="projects"
+                value={additionalData.projects}
+                onChange={handleAdditionalDataChange}
+                className="w-full p-2 rounded-md text-white bg-gray-800 mb-4"
+              />
+            </div>
+            <div>
+              <label className="block text-sm mb-2">Courses and Certifications</label>
+              <textarea
+                name="courses"
+                value={additionalData.courses}
+                onChange={handleAdditionalDataChange}
+                className="w-full p-2 rounded-md text-white bg-gray-800 mb-4"
+              />
+            </div>
+            <div>
+              <label className="block text-sm mb-2">Skills</label>
+              <textarea
+                name="skills"
+                value={additionalData.skills}
+                onChange={handleAdditionalDataChange}
+                className="w-full p-2 rounded-md text-white bg-gray-800 mb-4"
+              />
+            </div>
+            <div>
+              <label className="block text-sm mb-2">Extracurriculars</label>
+              <textarea
+                name="extracurriculars"
+                value={additionalData.extracurriculars}
+                onChange={handleAdditionalDataChange}
+                className="w-full p-2 rounded-md text-white bg-gray-800 mb-4"
+              />
+            </div>
+          </div>
+        )}
 
         <button
           onClick={generateResume}

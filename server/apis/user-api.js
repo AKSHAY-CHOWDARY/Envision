@@ -19,6 +19,8 @@ userApp.use((req, res, next) => {
 	jobsObj = req.app.get("jobsCollection");
 	next();
 });
+// Load Gemini API Key
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 //SAVE USER DATA TO DB
 userApp.post(
@@ -141,8 +143,8 @@ userApp.post(
 
 // Resume generation endpoint
 userApp.post("/generate-resume", (req, res) => {
-    const { userData } = req.body;
-  
+    const { userData, additionalData } = req.body;
+
     // Extracting the necessary data from the LinkedIn profile object
     const fullName = userData.fullName;
     const firstName = userData.first_name;
@@ -155,8 +157,17 @@ userApp.post("/generate-resume", (req, res) => {
     const profilePhoto = userData.profile_photo;
     const backgroundCoverImage = userData.background_cover_image_url;
     const education = userData.education && userData.education[0] ? userData.education[0].degree : 'N/A';
+    
+    const projects = additionalData.projects || 'N/A';
+    const courses = additionalData.courses || 'N/A';
+    const certifications = additionalData.certifications || 'N/A';
+    const skills = additionalData.skills || 'N/A';
+    const extracurriculars = additionalData.extracurriculars || 'N/A';
+
     const latexTemplate = `
     \\documentclass[a4paper, 12pt]{article}
+    \\usepackage{graphicx}
+    \\usepackage{hyperref}
     \\begin{document}
 
     % Title Section
@@ -165,7 +176,7 @@ userApp.post("/generate-resume", (req, res) => {
     \\date{}
     \\maketitle
 
-    % Profile Image Section (Note: Images won't work unless you download them locally, as LaTeX doesn't support online images directly)
+    % Profile Image Section
     % \\begin{figure}[h!]
     %     \\centering
     %     \\includegraphics[width=0.2\\textwidth]{${profilePhoto}}
@@ -186,11 +197,37 @@ userApp.post("/generate-resume", (req, res) => {
     \\section*{Education}
     \\begin{itemize}
         \\item \\textbf{Degree:} ${education}
-        \\end{itemize}
+    \\end{itemize}
+
+    % Projects Section
+    \\section*{Projects}
+    \\begin{itemize}
+        \\item ${projects}
+    \\end{itemize}
+
+    % Courses and Certifications Section
+    \\section*{Courses and Certifications}
+    \\begin{itemize}
+        \\item ${courses}
+        \\item ${certifications}
+    \\end{itemize}
+
+    % Skills Section
+    \\section*{Skills}
+    \\begin{itemize}
+        \\item ${skills}
+    \\end{itemize}
+
+    % Extracurriculars Section
+    \\section*{Extracurriculars}
+    \\begin{itemize}
+        \\item ${extracurriculars}
+    \\end{itemize}
 
     % Closing
     \\end{document}
     `;
+
   
     fs.writeFileSync("resume.tex", latexTemplate);
   
