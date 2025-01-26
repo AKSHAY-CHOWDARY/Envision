@@ -89,10 +89,13 @@ function Landing() {
               description="Access customized learning resources and certification tracks"
             />
             <FeatureCard
-              icon={FileText}
-              title="Smart Resume Builder"
-              description="Create ATS-optimized resumes with AI-powered suggestions"
-            />
+  icon={FileText}
+  title="Smart Resume Builder"
+  description="Create ATS-optimized resumes with AI-powered suggestions"
+/>
+<button onClick={() => navigate('/resume')} className="mt-4 text-indigo-400 hover:underline">
+  Try Resume Builder
+</button>
           </div>
         </div>
       </section>

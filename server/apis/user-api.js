@@ -3,9 +3,10 @@ const userApp = exp.Router();
 const expressAsyncHandler = require("express-async-handler");
 require("dotenv").config();
 const axios = require("axios");
-
+const fs = require("fs");
 const profile_key = process.env.LINKEDIN_PROFILE_API_KEY;
-
+const { exec } = require("child_process");
+const bodyParser = require("body-parser");
 require("dotenv").config();
 //body parser
 userApp.use(exp.json());
@@ -39,7 +40,7 @@ userApp.post(
 userApp.post('/jobs', expressAsyncHandler(async (req, res) => {
 	//let filters = req.body; take when implementing filters
 	try {
-		let response = await jobsObj.find().toArray()
+		let response = await jobsObj.find({job_position:"Software Engineer"}).toArray()
 		return res.send({ message: "All Jobs", payload: response });
 	} catch (err) {
 		console.log(err);
@@ -76,6 +77,7 @@ userApp.post(
 	expressAsyncHandler(async (req, res) => {
 		const url = req.params.url;
 		const userId = req.body.userId;
+		console.log(url,userId);
 		try {
 			let scrapingResponse = await axios.get(
 				`https://api.scrapingdog.com/linkedin/?api_key=${profile_key}&type=profile&linkId=${url}`
@@ -135,5 +137,74 @@ userApp.post(
 		}
 	})
 );
+
+
+// Resume generation endpoint
+userApp.post("/generate-resume", (req, res) => {
+    const { userData } = req.body;
+  
+    // Extracting the necessary data from the LinkedIn profile object
+    const fullName = userData.fullName;
+    const firstName = userData.first_name;
+    const lastName = userData.last_name;
+    const headline = userData.headline;
+    const location = userData.location.trim();
+    const about = userData.about;
+    const connections = userData.connections;
+    const followers = userData.followers;
+    const profilePhoto = userData.profile_photo;
+    const backgroundCoverImage = userData.background_cover_image_url;
+    const education = userData.education && userData.education[0] ? userData.education[0].degree : 'N/A';
+    const latexTemplate = `
+    \\documentclass[a4paper, 12pt]{article}
+    \\begin{document}
+
+    % Title Section
+    \\title{\\textbf{Resume}}
+    \\author{\\textbf{${fullName}}}
+    \\date{}
+    \\maketitle
+
+    % Profile Image Section (Note: Images won't work unless you download them locally, as LaTeX doesn't support online images directly)
+    % \\begin{figure}[h!]
+    %     \\centering
+    %     \\includegraphics[width=0.2\\textwidth]{${profilePhoto}}
+    % \\end{figure}
+
+    % Personal Details Section
+    \\section*{Personal Information}
+    \\begin{itemize}
+        \\item \\textbf{Full Name:} ${fullName}
+        \\item \\textbf{Headline:} ${headline}
+        \\item \\textbf{Location:} ${location}
+        \\item \\textbf{About Me:} ${about}
+        \\item \\textbf{Connections:} ${connections}
+        \\item \\textbf{Followers:} ${followers}
+    \\end{itemize}
+
+    % Education Section
+    \\section*{Education}
+    \\begin{itemize}
+        \\item \\textbf{Degree:} ${education}
+        \\end{itemize}
+
+    % Closing
+    \\end{document}
+    `;
+  
+    fs.writeFileSync("resume.tex", latexTemplate);
+  
+    // Compile LaTeX to PDF
+    exec("pdflatex resume.tex", (err, stdout, stderr) => {
+      if (err) {
+        console.error("Error generating PDF:", stderr);  // <-- Log the error
+        return res.status(500).json({ error: "Error generating resume.", details: stderr });
+      }
+      
+      const pdf = fs.readFileSync("resume.pdf");
+      res.contentType("application/pdf").send(pdf);
+    });
+  });
+
 
 module.exports = userApp;
