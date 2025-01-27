@@ -5,12 +5,12 @@ import {
     ArrowTrendingUpIcon
   } from '@heroicons/react/24/outline';
   import { motion } from 'framer-motion';
-  import StatCard from '../components/StatCard';
-  import SkillGapChart from '../components/SkillGapChart';
-  import PerformanceTrends from '../components/PerformanceTrends';
-  import SubjectAnalysis from '../components/SubjectAnalysis';
+  import StatCard from '../components/dashboard/StatCard';
+  import SkillGapChart from '../components/dashboard/SkillGapChart';
+  import PerformanceTrends from '../components/dashboard/PerformanceTrends';
+  import SubjectAnalysis from '../components/dashboard/SubjectAnalysis';
   
-  function App() {
+  function Dashboard() {
     const container = {
       hidden: { opacity: 0 },
       show: {
@@ -111,4 +111,4 @@ import {
     );
   }
   
-  export default App;
+  export default Dashboard;
