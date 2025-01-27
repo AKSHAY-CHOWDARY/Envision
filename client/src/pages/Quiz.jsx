@@ -22,7 +22,7 @@ function Quiz() {
       'system-design': [55, 60, 65]
     };
   });
-
+ 
   const role = jobRoles.find(r => r.id === roleId);
   const domainQuestions = questions[roleId]?.[currentDomain] || [];
 
@@ -52,10 +52,11 @@ function Quiz() {
       setCurrentDomain(nextDomain);
       setCurrentQuestion(0);
     } else {
+
       setShowResults(true);
     }
   };
-
+/*
   const calculateScore = () => {
     let scores = {};
     let total = 0;
@@ -178,7 +179,7 @@ function Quiz() {
       </div>
     );
   }
-
+*/
   const question = domainQuestions[currentQuestion];
 
   return (
