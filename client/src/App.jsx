@@ -28,8 +28,8 @@ function App() {
 				<Route path="/dashboard" element={<ProtectPage><Dashboard /></ProtectPage>} />
 				<Route path="/resume" element={<ProtectPage><ResumeGenerator /></ProtectPage>} />
 				<Route path="/resumePage" element={<ResumePage />} />
-				<Route path="/quiz" element={<ProtectPage><JobSelection/></ProtectPage>} />
-				<Route path="/quiz/:roleId" element={<ProtectPage><Quiz /></ProtectPage>} />
+				<Route path="/jobselection" element={<ProtectPage><JobSelection/></ProtectPage>} />
+				<Route path="/quiz" element={<ProtectPage><Quiz /></ProtectPage>} />
 				<Route path="/jobrole" element={<ProtectPage><JobRoles/></ProtectPage>} />
 				<Route path="/jobrole/:role/roadmap" element={<RoadMap />} />
 				<Route path="/ats" element={<ATSResumeTracker />} />

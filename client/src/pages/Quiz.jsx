@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import {useUser} from '@clerk/clerk-react';
-
+import { useUser } from '@clerk/clerk-react';
+import axios from 'axios';
 
 const Quiz = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { testId, questions } = location.state || {};
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState({});
-  const [timeLeft, setTimeLeft] = useState(60 * 60); 
+  const [selectedAnswers, setSelectedAnswers] = useState(Array(questions?.length).fill(null));
+  const [timeLeft, setTimeLeft] = useState(60 * 60);
   const { user } = useUser();
 
   useEffect(() => {
@@ -34,10 +34,9 @@ const Quiz = () => {
   };
 
   const handleAnswerSelect = (option) => {
-    setSelectedAnswers({
-      ...selectedAnswers,
-      [currentQuestion]: option,
-    });
+    const updatedAnswers = [...selectedAnswers];
+    updatedAnswers[currentQuestion] = option;
+    setSelectedAnswers(updatedAnswers);
   };
 
   const handleNext = () => {
@@ -47,33 +46,28 @@ const Quiz = () => {
   };
 
   const handleSubmit = async () => {
+    //console.log(selectedAnswers);
     try {
-      const response = await fetch('http://localhost:5000/test-api/submit-answers', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          testId,
-          answers: Object.values(selectedAnswers),
-          userId: user.id,
-        }),
+      const response = await axios.post('http://localhost:5000/test-api/submit-answers', {
+        testId: testId,
+        answers: selectedAnswers,
+        userId: user.id,
       });
-
-      const data = await response.json();
-      if (response.ok) {
-        navigate('/quizresults', { 
-          state: { 
+      console.log(response);
+      //const data = response.data;
+      if (response.data.message === "Test submitted successfully") {
+        navigate('/quiz-results', {
+          state: {
             results: {
               total: questions.length,
-              correct: data.payload.score,
-              percentage: (data.payload.score / questions.length) * 100
+              correct: response.data.payload.score,
+              percentage: (response.data.payload.score / questions.length) * 100,
             },
-            answers: selectedAnswers
-          }
+            answers: selectedAnswers,
+          },
         });
       } else {
-        throw new Error(data.message);
+        throw new Error(response.data.message);
       }
     } catch (error) {
       alert('Failed to submit answers. Please try again.');

@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Clock, FileText, AlertCircle, ChevronDown } from 'lucide-react';
 import {useUser} from '@clerk/clerk-react';
+import axios from 'axios';
 
 
 const TestDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { role } = location.state || {};
+  let { title,description } = location.state || '';
   const [experience, setExperience] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useUser();
-
+  //console.log(role);
 
   const testDetails = {
     duration: '60 minutes',
@@ -32,28 +33,18 @@ const TestDetails = () => {
 
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/test-api/generate-questions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          jobrole: role.title,
-          experience: experience,
-          userId: user.id,
-        }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
+      
+      const response = await axios.post('http://localhost:5000/test-api/generate-questions',{userId: user.id, jobrole: title, experience: experience});
+      //console.log(response);
+      if(response.data.message=="Questions generated and saved successfully"){
         navigate('/quiz', { 
           state: { 
-            testId: data.payload._id,
-            questions: data.payload.quiz 
+            testId: response.data.payload._id,
+            questions: response.data.payload.quiz 
           }
         });
-      } else {
-        throw new Error(data.message);
+      }else {
+        throw new Error(response.data.message);
       }
     } catch (error) {
       alert('Failed to generate questions. Please try again.');
@@ -66,8 +57,8 @@ const TestDetails = () => {
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold mb-2">{role?.title} Assessment</h1>
-          <p className="text-gray-600 mb-8">{role?.description}</p>
+          <h1 className="text-3xl font-bold mb-2">{title} Assessment</h1>
+          <p className="text-gray-600 mb-8">{description}</p>
 
           <div className="grid md:grid-cols-2 gap-6 mb-8">
             <div className="flex items-center gap-3">

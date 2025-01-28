@@ -130,6 +130,7 @@ app.add_middleware(
 async def generate_quiz(request: QuizRequest):
     try:
         with get_openai_callback() as cb:
+            print(f"request object: {request}")
             response = generate_evaluate_chain({
                 "jobrole": request.jobrole,
                 "experience": request.experience,
