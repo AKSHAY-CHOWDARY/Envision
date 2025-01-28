@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
-
+import { useNavigate } from "react-router"; 
 const ResumeGenerator = () => {
   const { user } = useUser();
   const userId = user ? user.id : null;
@@ -17,7 +17,7 @@ const ResumeGenerator = () => {
     extracurriculars: "",
   });
   const [showForm, setShowForm] = useState(false);
-
+  const navigate=useNavigate();
   useEffect(() => {
     const fetchLinkedInData = async () => {
       if (!userId) return;
@@ -62,16 +62,7 @@ const ResumeGenerator = () => {
   };
 
   const generateResume = async () => {
-    if (!userData) return alert("User data not loaded yet.");
-    try {
-      console.log(userData);
-      const res = await axios.post("http://localhost:5000/user-api/generate-resume", { userData, additionalData }, { responseType: "arraybuffer" });
-      const blob = new Blob([res.data], { type: "application/pdf" });
-      const url = URL.createObjectURL(blob);
-      setResumePdf(url);
-    } catch (err) {
-      console.error("Error generating resume", err);
-    }
+    navigate('/resumePage');
   };
 
   return (

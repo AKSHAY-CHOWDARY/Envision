@@ -147,36 +147,72 @@ userApp.post(
 	})
 );
 
+
+
 userApp.post("/generate-resume", expressAsyncHandler(async (req, res) => {
     const { userData, additionalData } = req.body;
 
-    // Construct the prompt for generating the resume content
-    const prompt = `
-        enhance the below information provided for resume:
-        Name: ${userData.fullName}
-        Headline: ${userData.headline}
-        Location: ${userData.location}
-        About: ${userData.about}
-        Skills: ${additionalData.skills}
-        Education: ${userData.education}
-        Projects: ${additionalData.projects}
-        Courses: ${additionalData.courses}
-        Certifications: ${additionalData.certifications}
-        Extracurriculars: ${additionalData.extracurriculars}
-    `;
+   // Constructing a structured prompt
+   const prompt = `
+   Enhance the user's resume details and return a valid JSON response **without any extra text or formatting**.
+   
+   The JSON format:
+   {
+	   "fullName": "...",
+	   "headline": "...",
+	   "location": "...",
+	   "about": "...",
+	   "skills": ["...", "..."],
+	   "education": ["...", "..."],
+	   "projects": ["...", "..."],
+	   "courses": ["...", "..."],
+	   "certifications": ["...", "..."],
+	   "extracurriculars": ["...", "..."]
+   }
 
-    try {
-        // Assuming the Gemini model has a 'generate()' or equivalent method
-        const aiResponse = await model.generateContent(
-            prompt
-            // Adjust based on the desired response length
-        );
+   Here is the raw user data:
+   Name: ${userData.fullName}
+   Headline: ${userData.headline}
+   Location: ${userData.location}
+   About: ${userData.about}
+   Skills: ${JSON.stringify(additionalData.skills)}
+   Education: ${JSON.stringify(userData.education)}
+   Projects: ${JSON.stringify(additionalData.projects)}
+   Courses: ${JSON.stringify(additionalData.courses)}
+   Certifications: ${JSON.stringify(additionalData.certifications)}
+   Extracurriculars: ${JSON.stringify(additionalData.extracurriculars)}
+`;
 
-        const resumeContent = aiResponse.response.text();  // Assuming the text is in 'text' field
-		console.log(resumeContent);
-        // Use the generated content in your LaTeX resume template
-        const latexTemplate = `
-        \\documentclass[a4paper, 12pt]{article}
+try {
+	const aiResponse = await model.generateContent(prompt);
+	
+	let rawText = aiResponse.response.text().trim();
+
+	// **Extract only JSON part**
+	const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+	if (!jsonMatch) {
+		throw new Error("AI response does not contain valid JSON.");
+	}
+
+	let jsonText = jsonMatch[0];
+
+	// **Fix common JSON issues**
+	jsonText = jsonText
+		.replace(/,\s*}/g, "}") // Remove trailing commas in objects
+		.replace(/,\s*]/g, "]"); // Remove trailing commas in arrays
+
+	const generatedResume = JSON.parse(jsonText);
+	console.log("Generated Resume Data:", generatedResume);
+// **Function to sanitize LaTeX special characters**
+const sanitizeLatex = (str) => {
+	return str.replace(/&/g, "\\&")
+			  .replace(/%/g, "\\%")
+			  .replace(/_/g, "\\_")
+			  .replace(/\$/g, "\\$");
+};
+   // LaTeX Resume Template
+   const latexTemplate = `
+   \\documentclass[a4paper, 12pt]{article}
     \\usepackage{graphicx}
     \\usepackage{hyperref}
     \\begin{document}
@@ -185,15 +221,44 @@ userApp.post("/generate-resume", expressAsyncHandler(async (req, res) => {
     \\title{\\textbf{Resume}}
     \\author{\\textbf{${userData.fullName}}}
     \\date{}
-    \\maketitle
+    \\maketitle                          
 
-    ${resumeContent} 
+   % About
+        \\section*{About}
+        ${generatedResume.about}
+	
+	
+	 % Education
+        \\section*{Education}
+        \\begin{itemize}
+        ${generatedResume.education.map(edu => `\\item ${edu}`).join("\n")}
+        \\end{itemize}
+		
+	
+% Skills
+	\\section*{Skills}
+	\\begin{itemize}
+	${generatedResume.skills.map(skill => `\\item ${sanitizeLatex(skill)}`).join("\n")}
+	\\end{itemize}
+
+% Projects
+        \\section*{Projects}
+        \\begin{itemize}
+        ${generatedResume.projects.map(project => `\\item ${sanitizeLatex(project)}`).join("\n")}
+        \\end{itemize}
+
+   % Extracurricular Activities
+        \\section*{Extracurricular Activities}
+        \\begin{itemize}
+        ${generatedResume.extracurriculars.map(extra => `\\item ${sanitizeLatex(extra)}`).join("\n")}
+        \\end{itemize}
+
+
+	 
    
     % Closing
-    \\end{document}`
-    ;
-
-
+    \\end{document}
+  `;
 
         fs.writeFileSync("resume.tex", latexTemplate);
 

@@ -14,7 +14,7 @@ import JobTracker from "./pages/JobTracker.jsx";
 import JobRoles from "./pages/JobRoles.jsx";
 import RoadMap from "./pages/RoadMap.jsx";
 import ATSResumeTracker from "./pages/ATSResumeTracker.jsx";
-
+import ResumePage from "./pages/ResumePage.jsx";
 function App() {
 	return (
 		<div>
@@ -25,6 +25,7 @@ function App() {
 				<Route path="/jobsTracker" element={<ProtectPage><JobTracker /></ProtectPage>} />
 				<Route path="/dashboard" element={<ProtectPage><Dashboard /></ProtectPage>} />
 				<Route path="/resume" element={<ProtectPage><ResumeGenerator /></ProtectPage>} />
+				<Route path="/resumePage" element={<ResumePage />} />
 				<Route path="/quiz" element={<ProtectPage><JobSelection/></ProtectPage>} />
 				<Route path="/quiz/:roleId" element={<ProtectPage><Quiz /></ProtectPage>} />
 				<Route path="/jobrole" element={<ProtectPage><JobRoles/></ProtectPage>} />
