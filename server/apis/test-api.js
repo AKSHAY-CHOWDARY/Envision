@@ -30,7 +30,7 @@ const validateQuizRequest = (req, res, next) => {
     }
     next();
 };
-
+//GENERATE QUESTIONS
 testApp.post(
     "/generate-questions",
     validateQuizRequest,
@@ -82,5 +82,55 @@ testApp.post(
         }
     })
 );
+//BRO CHECK THE STATUS FIELD IN FRONTEND TO TELL IF THE TEST HAS ALREADY BEEN SUBMITTED
+//SUBMIT ANSWERS As an ARRAY
+testApp.post(
+    "/submit-answers",
+    expressAsyncHandler(async (req, res) => {
+        const { testId, answers, userId } = req.body;
+
+        try {
+            const testObj = await testsCollectionObj.findOne({ _id: testId, userId: userId });
+            if (!testObj) {
+                return res.status(404).json({ message: "Test not found" });
+            }
+            if (testObj.status !== 'active') {
+                return res.status(400).json({ message: "Test has already been submitted" });
+            }
+
+            const correctAnswers = testObj.quiz.map((q) => q.correct);
+            const score = answers.reduce((acc, ans, idx) => {
+                return ans === correctAnswers[idx] ? acc + 1 : acc;
+            }, 0);
+
+            const dbRes = await testsCollectionObj.updateOne(
+                { _id: testId, userId: userId },
+                {
+                    $set: {
+                        status: 'completed',
+                        answers,
+                        score
+                    }
+                }
+            );
+
+            return res.status(200).json({
+                message: "Test submitted successfully",
+                payload: {
+                    testId,
+                    userId,
+                    score
+                }
+            });
+
+        } catch (err) {
+            return res.status(500).json({
+                message: "Internal server error",
+                error: err.message
+            });
+        }
+    })
+);
+
 
 module.exports = testApp;
