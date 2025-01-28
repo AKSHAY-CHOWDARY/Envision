@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import {useUser} from '@clerk/clerk-react';
+
 
 const Quiz = () => {
   const navigate = useNavigate();
@@ -7,7 +9,8 @@ const Quiz = () => {
   const { testId, questions } = location.state || {};
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
-  const [timeLeft, setTimeLeft] = useState(60 * 60); // 60 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(60 * 60); 
+  const { user } = useUser();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -45,7 +48,7 @@ const Quiz = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/tests/submit-answers', {
+      const response = await fetch('http://localhost:5000/test-api/submit-answers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,7 +56,7 @@ const Quiz = () => {
         body: JSON.stringify({
           testId,
           answers: Object.values(selectedAnswers),
-          userId: 'user123' // In a real app, this would come from auth context
+          userId: user.id,
         }),
       });
 

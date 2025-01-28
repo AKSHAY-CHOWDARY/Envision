@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Clock, FileText, AlertCircle, ChevronDown } from 'lucide-react';
+import {useUser} from '@clerk/clerk-react';
+
 
 const TestDetails = () => {
   const location = useLocation();
@@ -8,6 +10,8 @@ const TestDetails = () => {
   const { role } = location.state || {};
   const [experience, setExperience] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { user } = useUser();
+
 
   const testDetails = {
     duration: '60 minutes',
@@ -28,7 +32,7 @@ const TestDetails = () => {
 
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:3000/api/tests/generate-questions', {
+      const response = await fetch('http://localhost:5000/test-api/generate-questions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +40,7 @@ const TestDetails = () => {
         body: JSON.stringify({
           jobrole: role.title,
           experience: experience,
-          userId: 'user123' // In a real app, this would come from auth context
+          userId: user.id,
         }),
       });
 
