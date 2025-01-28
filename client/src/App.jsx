@@ -15,6 +15,8 @@ import JobRoles from "./pages/JobRoles.jsx";
 import RoadMap from "./pages/RoadMap.jsx";
 import ATSResumeTracker from "./pages/ATSResumeTracker.jsx";
 import ResumePage from "./pages/ResumePage.jsx";
+import TestDetails from "./components/quiz/TestDetails.jsx";
+import QuizResults from "./pages/QuizResults.jsx";
 function App() {
 	return (
 		<div>
@@ -31,6 +33,8 @@ function App() {
 				<Route path="/jobrole" element={<ProtectPage><JobRoles/></ProtectPage>} />
 				<Route path="/jobrole/:role/roadmap" element={<RoadMap />} />
 				<Route path="/ats" element={<ATSResumeTracker />} />
+				<Route path="/test-details" element={<TestDetails />} />
+				<Route path="/quiz-results" element={<QuizResults />} />
 			</Routes>
 			<SignedIn>
 				<ChatBot/>
