@@ -12,6 +12,8 @@ import {
   Facebook
 } from 'lucide-react';
 import { useNavigate } from 'react-router';
+import {Link} from 'react-router-dom';
+
 function FeatureCard({ icon: Icon, title, description }) {
   return (
     <div className="p-6 bg-gray-800/50 backdrop-blur-lg rounded-xl shadow-lg hover:shadow-xl transition-shadow border border-gray-700">
@@ -73,26 +75,36 @@ function Landing() {
         <div className="container mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-white">Powerful Features to Accelerate Your Career</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <FeatureCard
-              icon={Brain}
-              title="AI Job Matching"
-              description="Get personalized job recommendations based on your skills and preferences"
-            />
-            <FeatureCard
-              icon={Target}
-              title="Skill Gap Analysis"
-              description="Identify and bridge crucial skill gaps for your dream role"
-            />
-            <FeatureCard
-              icon={BookOpen}
-              title="Learning Pathways"
-              description="Access customized learning resources and certification tracks"
-            />
-            <FeatureCard
-  icon={FileText}
-  title="Smart Resume Builder"
-  description="Create ATS-optimized resumes with AI-powered suggestions"
-/>
+            <Link to="/ats">
+                  <FeatureCard
+                  icon={Brain}
+                  title="AI Job Matching"
+                  description="Get personalized job recommendations based on your skills and preferences"
+                  />
+            </Link>
+            <Link to="/dashboard">
+                  <FeatureCard
+                  icon={Target}
+                  title="Skill Gap Analysis"
+                  description="Identify and bridge crucial skill gaps for your dream role"
+                  />
+            </Link>
+            <Link to="/jobrole">
+                <FeatureCard
+                icon={BookOpen}
+                title="Learning Pathways"
+                description="Access customized learning resources and certification tracks"
+                />
+            </Link>
+            <Link to="/resume">
+                <FeatureCard
+                icon={FileText}
+                title="Smart Resume Builder"
+                description="Create ATS-optimized resumes with AI-powered suggestions"
+                />
+            
+            </Link>
+
 <button onClick={() => navigate('/resume')} className="mt-4 text-indigo-400 hover:underline">
   Try Resume Builder
 </button>
