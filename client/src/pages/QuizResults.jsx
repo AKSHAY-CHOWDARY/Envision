@@ -1,16 +1,15 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { quizData } from '../data/quizData';
-import { CheckCircle, XCircle, BarChart } from 'lucide-react';
+import { CheckCircle, XCircle } from 'lucide-react';
 
 const QuizResults = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { results, answers } = location.state || { results: { correct: 0, total: 0, percentage: 0 }, answers: {} };
+  const { results, answers, questions } = location.state || { results: { correct: 0, total: 0, percentage: 0 }, answers: {}, questions: [] };
 
   const getSkillPerformance = () => {
     const skillMap = {};
-    quizData.quiz.forEach((question, index) => {
+    questions.forEach((question, index) => {
       if (!skillMap[question.skill]) {
         skillMap[question.skill] = { total: 0, correct: 0 };
       }
@@ -70,7 +69,7 @@ const QuizResults = () => {
           <div className="mb-8">
             <h2 className="text-xl font-semibold mb-4">Question Review</h2>
             <div className="space-y-4">
-              {quizData.quiz.map((question, index) => (
+              {questions.map((question, index) => (
                 <div key={index} className="border rounded-lg p-4">
                   <div className="flex items-start gap-4">
                     {answers[index] === question.correct ? (

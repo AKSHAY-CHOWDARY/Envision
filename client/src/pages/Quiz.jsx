@@ -9,7 +9,7 @@ const Quiz = () => {
   const { testId, questions } = location.state || {};
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState(Array(questions?.length).fill(null));
-  const [timeLeft, setTimeLeft] = useState(60 * 60);
+  const [timeLeft, setTimeLeft] = useState(10 * 60);
   const { user } = useUser();
 
   useEffect(() => {
@@ -64,6 +64,7 @@ const Quiz = () => {
               percentage: (response.data.payload.score / questions.length) * 100,
             },
             answers: selectedAnswers,
+            questions: questions,
           },
         });
       } else {
