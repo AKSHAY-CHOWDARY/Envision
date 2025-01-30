@@ -17,6 +17,12 @@ import ATSResumeTracker from "./pages/ATSResumeTracker.jsx";
 import ResumePage from "./pages/ResumePage.jsx";
 import TestDetails from "./components/quiz/TestDetails.jsx";
 import QuizResults from "./pages/QuizResults.jsx";
+import Home from "./pages/Home.jsx";
+import Interview from "./pages/Interview.jsx"; 
+import History from "./pages/History.jsx";
+
+
+
 function App() {
 	return (
 		<div>
@@ -35,6 +41,9 @@ function App() {
 				<Route path="/ats" element={<ATSResumeTracker />} />
 				<Route path="/test-details" element={<TestDetails />} />
 				<Route path="/quiz-results" element={<QuizResults />} />
+				<Route path="/home" element={<Home />} />
+				<Route path="/interview" element={<Interview />} />
+				<Route path="/history" element={<History />} />
 			</Routes>
 			<SignedIn>
 				<ChatBot/>
