@@ -69,7 +69,7 @@ const SkillGapChart = () => {
     <DashboardCard title="Skills Gap Analysis">
       <div className="h-[400px] flex items-center justify-center relative">
         <Doughnut data={skillsData} options={options} />
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="absolute inset-0 flex justify-center pointer-events-none">
           <div className="text-center">
             <div className="text-3xl font-bold text-gray-800">75%</div>
             <div className="text-sm text-gray-500">Overall Progress</div>

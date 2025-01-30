@@ -123,7 +123,7 @@ testApp.post(
             }, 0);
 
             const dbRes = await testsCollectionObj.updateOne(
-                { _id: testId, userId: userId },
+                { _id: new ObjectId(testId), userId: userId },
                 {
                     $set: {
                         status: 'completed',
