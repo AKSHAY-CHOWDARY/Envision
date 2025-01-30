@@ -123,12 +123,13 @@ testApp.post(
             }, 0);
 
             const dbRes = await testsCollectionObj.updateOne(
-                { _id: testId, userId: userId },
+                { _id: new ObjectId(testId), userId: userId },
                 {
                     $set: {
+
                         status: 'completed',
-                        answers,
-                        score
+                        answers:answers,
+                        score:score
                     }
                 }
             );
@@ -139,7 +140,8 @@ testApp.post(
                     testId,
                     userId,
                     score
-                }
+                },
+                dbRes:dbRes
             });
 
         } catch (err) {
