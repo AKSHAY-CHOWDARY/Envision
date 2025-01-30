@@ -105,9 +105,25 @@ function Landing() {
             
             </Link>
 
-<button onClick={() => navigate('/resume')} className="mt-4 text-indigo-400 hover:underline">
-  Try Resume Builder
-</button>
+{/*Button*/}
+<div className="flex justify-center mt-8">
+            <button
+              onClick={() => navigate('/resume')}
+              className="relative group px-8 py-3 rounded-full bg-gradient-to-r from-indigo-600 via-blue-500 to-indigo-600 bg-size-200 hover:bg-right-bottom transition-all duration-500 overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
+              <div className="absolute inset-0 rounded-full border-2 border-indigo-400/30 backdrop-blur-sm" />
+              <div className="relative flex items-center justify-center gap-2 text-white font-medium tracking-wider">
+                <span className="group-hover:scale-110 transition-transform duration-500">
+                  Try AI Resume Builder
+                </span>
+                <span className="opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-500">
+                  →
+                </span>
+              </div>
+            </button>
+          </div>
+          {/*Button end*/}
           </div>
         </div>
       </section>

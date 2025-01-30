@@ -22,7 +22,7 @@ const ResumeGenerator = () => {
     const fetchLinkedInData = async () => {
       if (!userId) return;
       try {
-        const res = await axios.get(`http://localhost:5000/user-api/linkedIn/${userId}`);
+        const res = await axios.get(`http://localhost:5000/user-api/linkedIn/user_2s83EfLI29H44b7jSoklEiMlBxO`);
         if (res.data.payload) {
           setUserData(res.data.payload);
           setIsLinkedInFetched(true);
@@ -75,93 +75,99 @@ const ResumeGenerator = () => {
   };
 
   return (
-    <div className="flex flex-row items-start justify-center min-h-screen bg-gray-900 text-white p-6 gap-6">
+    <div className="min-h-screen bg-gradient-to-br from-violet-100 to-white">
+      <div className="container mx-auto px-4 py-12">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold text-violet-900 mb-4">AI Resume Generator</h1>
+            <p className="text-violet-600">Transform your LinkedIn profile into a professional resume</p>
+          </div>
 
-      <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
-      <h2 className="text-3xl font-bold mb-6">AI Resume Generator</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Left Column - Input Section */}
+            <div className="space-y-6">
+              <div className="bg-white rounded-2xl shadow-xl p-8">
+                <div className="space-y-4">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Enter LinkedIn URL"
+                      value={linkedInUrl}
+                      onChange={(e) => setLinkedInUrl(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border border-violet-200 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-200"
+                      disabled={isLinkedInFetched}
+                    />
+                    <button
+                      onClick={fetchLinkedInData}
+                      disabled={!linkedInUrl || !userId || isLinkedInFetched}
+                      className="mt-3 w-full bg-violet-600 hover:bg-violet-700 text-white font-medium px-6 py-3 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02]"
+                    >
+                      Fetch LinkedIn Data
+                    </button>
+                  </div>
 
-        <input
-          type="text"
-          placeholder="Enter LinkedIn URL"
-          value={linkedInUrl}
-          onChange={(e) => setLinkedInUrl(e.target.value)}
-          className="w-full px-4 py-2 text-white rounded-md mb-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          disabled={isLinkedInFetched}
-        />
-        <button
-          onClick={fetchLinkedInData}
-          disabled={!linkedInUrl || !userId || isLinkedInFetched}
-          className="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-md disabled:opacity-50 transition mb-4"
-        >
-          Fetch LinkedIn Data
-        </button>
+                  <button
+                    onClick={() => setShowForm(!showForm)}
+                    className="w-full bg-white border-2 border-violet-600 text-violet-600 hover:bg-violet-50 font-medium px-6 py-3 rounded-lg transition-all duration-200 transform hover:scale-[1.02]"
+                  >
+                    {showForm ? 'Hide Additional Data' : 'Enter Additional Data'}
+                  </button>
 
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className="w-full px-4 py-2 bg-yellow-600 hover:bg-yellow-700 rounded-md transition mb-4"
-        >
-          Enter Additional Data
-        </button>
+                  <button
+                    onClick={generateResume}
+                    disabled={!userData}
+                    className="w-full bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-medium px-6 py-3 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] shadow-lg"
+                  >
+                    Generate Resume
+                  </button>
+                </div>
+              </div>
 
-        {showForm && (
-        <div className="bg-gray-700 p-6 rounded-lg shadow-lg w-full max-w-lg">
-                    <h3 className="text-xl font-semibold mb-4">Additional Data</h3>
-
-            <div>
-              <label className="block text-sm mb-2">Projects</label>
-              <textarea
-                name="projects"
-                value={additionalData.projects}
-                onChange={handleAdditionalDataChange}
-                className="w-full p-2 rounded-md text-white bg-gray-800 mb-4"
-              />
+              {showForm && (
+                <div className="bg-white rounded-2xl shadow-xl p-8">
+                  <h3 className="text-xl font-semibold text-violet-900 mb-6">Additional Information</h3>
+                  <div className="space-y-4">
+                    {Object.entries(additionalData).map(([key, value]) => (
+                      <div key={key}>
+                        <label className="block text-sm font-medium text-violet-700 mb-2 capitalize">
+                          {key}
+                        </label>
+                        <textarea
+                          name={key}
+                          value={value}
+                          onChange={handleAdditionalDataChange}
+                          className="w-full px-4 py-3 rounded-lg border border-violet-200 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-200 min-h-[100px] resize-none"
+                          placeholder={`Enter your ${key}...`}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-            <div>
-              <label className="block text-sm mb-2">Courses and Certifications</label>
-              <textarea
-                name="courses"
-                value={additionalData.courses}
-                onChange={handleAdditionalDataChange}
-                className="w-full p-2 rounded-md text-white bg-gray-800 mb-4"
-              />
-            </div>
-            <div>
-              <label className="block text-sm mb-2">Skills</label>
-              <textarea
-                name="skills"
-                value={additionalData.skills}
-                onChange={handleAdditionalDataChange}
-                className="w-full p-2 rounded-md text-white bg-gray-800 mb-4"
-              />
-            </div>
-            <div>
-              <label className="block text-sm mb-2">Extracurriculars</label>
-              <textarea
-                name="extracurriculars"
-                value={additionalData.extracurriculars}
-                onChange={handleAdditionalDataChange}
-                className="w-full p-2 rounded-md text-white bg-gray-800 mb-4"
-              />
+
+            {/* Right Column - Preview Section */}
+            <div className="lg:mt-0 mt-6">
+              {resumePdf ? (
+                <div className="bg-white rounded-2xl shadow-xl p-8">
+                  <h3 className="text-xl font-semibold text-violet-900 mb-4">Resume Preview</h3>
+                  <iframe 
+                    src={resumePdf} 
+                    className="w-full h-[800px] rounded-lg border border-violet-200"
+                    title="Resume Preview"
+                  />
+                </div>
+              ) : (
+                <div className="bg-white/50 rounded-2xl border-2 border-dashed border-violet-300 p-8 flex items-center justify-center h-[400px]">
+                  <p className="text-violet-600 text-center">
+                    Your resume preview will appear here after generation
+                  </p>
+                </div>
+              )}
             </div>
           </div>
-        )}
-
-        <button
-          onClick={generateResume}
-          disabled={!userData}
-          className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 rounded-md disabled:opacity-50 transition"
-        >
-          Generate Resume
-        </button>
-      </div>
-
-      {resumePdf && (
-        <div className="mt-6 w-full max-w-4xl">
-          <h3 className="text-xl font-semibold mb-2">Resume Preview</h3>
-          <iframe src={resumePdf} className="w-full h-140 border rounded-lg shadow-md"></iframe>
         </div>
-      )}
-
+      </div>
     </div>
   );
 };
