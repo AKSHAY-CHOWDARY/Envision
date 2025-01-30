@@ -151,5 +151,22 @@ testApp.post(
     })
 );
 
+//GET ALL TESTS
+testApp.get(
+    "/get-all-tests/:userId",
+    expressAsyncHandler(async (req, res) => {
+        try {
+            const { userId } = req.params;
+            const tests = await testsCollectionObj.find({userId:userId}).toArray();
+            return res.status(200).json({ tests });
+        } catch (err) {
+            return res.status(500).json({
+                message: "Internal server error",
+                error: err.message
+            });
+        }
+    })
+);
+
 
 module.exports = testApp;

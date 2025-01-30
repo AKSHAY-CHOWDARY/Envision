@@ -135,7 +135,7 @@ async def generate_quiz(request: QuizRequest):
                 "jobrole": request.jobrole,
                 "experience": request.experience,
                 "response_json": json.dumps(RESPONSE_JSON)
-            })
+            })  
 
         quiz = response.get("quiz")
 
