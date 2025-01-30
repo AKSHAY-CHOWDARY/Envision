@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
-import { useNavigate } from "react-router"; 
+
 const ResumeGenerator = () => {
   const { user } = useUser();
   const userId = user ? user.id : null;
@@ -17,7 +17,7 @@ const ResumeGenerator = () => {
     extracurriculars: "",
   });
   const [showForm, setShowForm] = useState(false);
-  const navigate=useNavigate();
+
   useEffect(() => {
     const fetchLinkedInData = async () => {
       if (!userId) return;
@@ -62,14 +62,24 @@ const ResumeGenerator = () => {
   };
 
   const generateResume = async () => {
-    navigate('/resumePage');
+    if (!userData) return alert("User data not loaded yet.");
+    try {
+      console.log(userData);
+      const res = await axios.post("http://localhost:5000/user-api/generate-resume", { userData, additionalData }, { responseType: "arraybuffer" });
+      const blob = new Blob([res.data], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      setResumePdf(url);
+    } catch (err) {
+      console.error("Error generating resume", err);
+    }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-6">
-      <h2 className="text-3xl font-bold mb-6">AI Resume Generator</h2>
+    <div className="flex flex-row items-start justify-center min-h-screen bg-gray-900 text-white p-6 gap-6">
 
       <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
+      <h2 className="text-3xl font-bold mb-6">AI Resume Generator</h2>
+
         <input
           type="text"
           placeholder="Enter LinkedIn URL"
@@ -94,7 +104,9 @@ const ResumeGenerator = () => {
         </button>
 
         {showForm && (
-          <div className="bg-gray-700 p-4 rounded-md">
+        <div className="bg-gray-700 p-6 rounded-lg shadow-lg w-full max-w-lg">
+                    <h3 className="text-xl font-semibold mb-4">Additional Data</h3>
+
             <div>
               <label className="block text-sm mb-2">Projects</label>
               <textarea
@@ -146,9 +158,10 @@ const ResumeGenerator = () => {
       {resumePdf && (
         <div className="mt-6 w-full max-w-4xl">
           <h3 className="text-xl font-semibold mb-2">Resume Preview</h3>
-          <iframe src={resumePdf} className="w-full h-96 border rounded-lg shadow-md"></iframe>
+          <iframe src={resumePdf} className="w-full h-140 border rounded-lg shadow-md"></iframe>
         </div>
       )}
+
     </div>
   );
 };
