@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.1.30)  30 JAN 2025 22:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.1.30)  31 JAN 2025 17:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -73,12 +73,11 @@ Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
 etkeys.sty
 Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
 )
-! Interruption.
-<argument> \__file_size:n {kvdefinekeys.sty}
-                                            
-l.112 \RequirePackage{kvdefinekeys}[2011/04/07]
-                                               
-? \MiKTeX\tex/generic/pdfescape\p
+(C:\Users\KEERTHIKA REDDY\AppData\Local\Programs\MiKTeX\tex/generic/kvdefinekey
+s\kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)
+(C:\Users\KEERTHIKA REDDY\AppData\Local\Programs\MiKTeX\tex/generic/pdfescape\p
 dfescape.sty
 Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
 
