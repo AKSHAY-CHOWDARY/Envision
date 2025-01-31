@@ -77,15 +77,15 @@ const ResumeGenerator = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-100 to-white">
       <div className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-violet-900 mb-4">AI Resume Generator</h1>
             <p className="text-violet-600">Transform your LinkedIn profile into a professional resume</p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Left Column - Input Section */}
-            <div className="space-y-6">
+            <div className="space-y-6 lg:ml-[-30px]"> 
               <div className="bg-white rounded-2xl shadow-xl p-8">
                 <div className="space-y-4">
                   <div className="relative">
@@ -147,24 +147,25 @@ const ResumeGenerator = () => {
             </div>
 
             {/* Right Column - Preview Section */}
-            <div className="lg:mt-0 mt-6">
+            <div className="lg:mt-0 mt-6 flex justify-center">
               {resumePdf ? (
-                <div className="bg-white rounded-2xl shadow-xl p-8">
+                <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-[1100px]">
                   <h3 className="text-xl font-semibold text-violet-900 mb-4">Resume Preview</h3>
                   <iframe 
                     src={resumePdf} 
-                    className="w-full h-[800px] rounded-lg border border-violet-200"
+                    className="w-[90vw] max-w-[800px] h-[800px] rounded-lg border border-violet-200"
                     title="Resume Preview"
                   />
                 </div>
               ) : (
-                <div className="bg-white/50 rounded-2xl border-2 border-dashed border-violet-300 p-8 flex items-center justify-center h-[400px]">
+                <div className="bg-white/50 rounded-2xl border-2 border-dashed border-violet-300 p-8 flex items-center justify-center h-[400px] w-full max-w-[1100px]">
                   <p className="text-violet-600 text-center">
                     Your resume preview will appear here after generation
                   </p>
                 </div>
               )}
             </div>
+
           </div>
         </div>
       </div>

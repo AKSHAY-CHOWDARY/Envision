@@ -38,6 +38,7 @@ const Navigation = () => {
           <button className='font-semibold text-white text-lg cursor-pointer hover:text-indigo-200' onClick={()=>navigate('/dashboard')} >Dashboard</button>
           <button className='font-semibold text-white text-lg cursor-pointer hover:text-indigo-200' onClick={()=>navigate('/jobselection')} >Quiz</button>
           <button className='font-semibold text-white text-lg cursor-pointer hover:text-indigo-200' onClick={()=>navigate('/ats')} >Resume Tracker</button>
+          <button className='font-semibold text-white text-lg cursor-pointer hover:text-indigo-200' onClick={()=>navigate('/home')} >Mock Interview</button>
           <UserButton />
           </div>
         </div>
