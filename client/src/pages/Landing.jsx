@@ -1,42 +1,90 @@
 import React from 'react';
 import {
   Brain,
-  Target,
-  BookOpen,
-  TrendingUp,
-  FileText,
+  Sparkles,
+  GraduationCap,
+  Lightbulb,
+  Notebook as Robot,
   ChevronRight,
-  Star,
-  Linkedin,
+  Code,
+  LineChart,
+  Rocket,
+  Github,
   Twitter,
-  Facebook
+  Linkedin,
+  FileText,
+  ArrowRight,
+  Star
 } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import {Link} from 'react-router-dom';
 
 function FeatureCard({ icon: Icon, title, description }) {
   return (
-    <div className="p-6 bg-gray-800/50 backdrop-blur-lg rounded-xl shadow-lg hover:shadow-xl transition-shadow border border-gray-700">
-      <div className="w-12 h-12 bg-indigo-900/50 rounded-lg flex items-center justify-center mb-4">
-        <Icon className="w-6 h-6 text-indigo-400" />
+    <div className="group relative p-8 bg-gradient-to-br from-slate-800/30 to-slate-900/30 backdrop-blur-xl rounded-2xl border border-slate-700/50 hover:border-cyan-500/50 transition-all duration-500 hover:transform hover:scale-105">
+      <div className="absolute inset-0 bg-cyan-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500" />
+      <div className="relative">
+        <div className="w-16 h-16 bg-gradient-to-tr from-cyan-500/20 via-blue-500/20 to-purple-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+          <Icon className="w-8 h-8 text-cyan-400 group-hover:text-cyan-300 transition-colors duration-500" />
+        </div>
+        <h3 className="text-xl font-bold mb-3 text-white group-hover:text-cyan-400 transition-colors duration-500">{title}</h3>
+        <p className="text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors duration-500">{description}</p>
       </div>
-      <h3 className="text-xl font-bold mb-2 text-white">{title}</h3>
-      <p className="text-gray-400">{description}</p>
+    </div>
+  );
+}
+
+function StatCard({ number, label }) {
+  return (
+    <div className="relative group">
+      <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl opacity-20 group-hover:opacity-30 blur-xl transition-opacity duration-500" />
+      <div className="relative p-8 bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-slate-700/50 group-hover:border-cyan-500/50 transition-all duration-500">
+        <div className="text-4xl font-bold text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text mb-2 group-hover:scale-110 transition-transform duration-500">
+          {number}
+        </div>
+        <p className="text-slate-400 group-hover:text-slate-300 transition-colors duration-500">{label}</p>
+      </div>
     </div>
   );
 }
 
 function TestimonialCard({ name, role, quote, image }) {
   return (
-    <div className="bg-gray-800/50 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-gray-700">
-      <div className="flex items-center mb-4">
-        <img src={image} alt={name} className="w-12 h-12 rounded-full object-cover mr-4" />
-        <div>
-          <h4 className="font-bold text-white">{name}</h4>
-          <p className="text-gray-400 text-sm">{role}</p>
+    <div className="group relative p-8">
+      <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500" />
+      <div className="relative bg-slate-800/30 backdrop-blur-xl rounded-2xl border border-slate-700/50 group-hover:border-cyan-500/50 transition-all duration-500 p-8">
+        <div className="flex items-center mb-6">
+          <div className="relative">
+            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-full opacity-50 blur-sm" />
+            <img src={image} alt={name} className="w-16 h-16 rounded-full object-cover relative" />
+          </div>
+          <div className="ml-4">
+            <h4 className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors duration-500">{name}</h4>
+            <p className="text-slate-400">{role}</p>
+          </div>
+        </div>
+        <div className="relative">
+          <Star className="absolute -left-2 -top-2 w-6 h-6 text-cyan-500/20" />
+          <p className="text-slate-300 italic leading-relaxed">{quote}</p>
         </div>
       </div>
-      <p className="text-gray-300 italic">"{quote}"</p>
+    </div>
+  );
+}
+
+function StepCard({ number, title, description }) {
+  return (
+    <div className="relative group">
+      <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl opacity-10 group-hover:opacity-20 blur-xl transition-opacity duration-500" />
+      <div className="relative p-8 bg-slate-800/30 backdrop-blur-xl rounded-2xl border border-slate-700/50 group-hover:border-cyan-500/50 transition-all duration-500">
+        <div className="w-12 h-12 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+          <span className="text-xl font-bold text-white">{number}</span>
+        </div>
+        <h3 className="text-xl font-bold mb-4 text-white group-hover:text-cyan-400 transition-colors duration-500">{title}</h3>
+        <p className="text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors duration-500">{description}</p>
+      </div>
     </div>
   );
 }
@@ -44,139 +92,236 @@ function TestimonialCard({ name, role, quote, image }) {
 function Landing() {
   const navigate = useNavigate()
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-indigo-950 to-gray-900">
+    <div className="min-h-screen bg-[#020817] bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]">
       {/* Hero Section */}
-      <header className="container mx-auto px-6 py-16 md:py-24">
-        <div className="flex flex-col md:flex-row items-center justify-between">
-          <div className="md:w-1/2 mb-12 md:mb-0">
-            <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight mb-6">
-              Empower Your Career with AI-Driven Insights
+      <header className="container mx-auto px-6 pt-24 pb-32 relat">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full">
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 blur-3xl opacity-20 animate-pulse" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(120,119,198,0.3),transparent)] animate-pulse" />
+        </div>
+        <div className="relative ">
+          <div className="text-center max-w-4xl mx-auto pt-5">
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 mb-8 hover:border-cyan-500/50 transition-colors duration-500">
+              <Sparkles className="w-4 h-4 text-cyan-400 mr-2 animate-pulse" />
+              <span className="text-sm text-slate-300">The Future of Learning is Here</span>
+            </div>
+            <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
+              <span className="text-white"></span>
+              <span className="relative">
+                <span className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 blur-xl opacity-20" />
+                <span className="relative bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent"> EnVision </span>
+              </span>
+              <span className="text-white"> Greatness, Embrace the Journey!</span>
             </h1>
-            <p className="text-xl text-gray-300 mb-8">
-              Transform your professional journey with personalized AI guidance, skill development, and job matching.
+            <p className="text-xl text-slate-400 mb-12 leading-relaxed">
+              Experience personalized learning at its finest with our cutting-edge AI technology.
+              Master new skills, track your progress, and achieve your educational goals faster than ever.
             </p>
-            <button onClick={()=>navigate('/jobs')} className="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors flex items-center group">
-              Get Started Free
-              <ChevronRight className="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
-            </button>
-          </div>
-          <div className="md:w-1/2">
-            <img
-              src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80"
-              alt="AI Career Platform"
-              className="rounded-xl shadow-2xl ring-1 ring-gray-700"
-            />
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button onClick={()=>navigate('/jobs')} className="group relative px-8 py-4 rounded-xl overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 transition-transform duration-500 group-hover:scale-105" />
+                <div className="relative flex items-center text-white font-semibold">
+                  Start Learning Now
+                  <ChevronRight className="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-500" />
+                </div>
+              </button>
+              <button className="px-8 py-4 bg-slate-800/50 backdrop-blur-xl rounded-xl text-white font-semibold border border-slate-700/50 hover:border-cyan-500/50 transition-all duration-500 hover:bg-slate-800/70">
+                Watch Demo
+              </button>
+            </div>
           </div>
         </div>
       </header>
 
+      {/* Stats Section */}
+      <section className="py-20 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/50 to-transparent" />
+        <div className="container mx-auto px-6 relative">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <StatCard number="50K+" label="Active Learners" />
+            <StatCard number="200+" label="AI-Powered Courses" />
+            <StatCard number="95%" label="Success Rate" />
+            <StatCard number="24/7" label="AI Support" />
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
-      <section className="bg-gray-900/50 py-20">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-white">Powerful Features to Accelerate Your Career</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Link to="/ats">
-                  <FeatureCard
-                  icon={Brain}
-                  title="AI Job Matching"
-                  description="Get personalized job recommendations based on your skills and preferences"
-                  />
-            </Link>
-            <Link to="/dashboard">
-                  <FeatureCard
-                  icon={Target}
-                  title="Skill Gap Analysis"
-                  description="Identify and bridge crucial skill gaps for your dream role"
-                  />
+      <section className="py-32 relative">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(120,119,198,0.08),transparent)]" />
+        <div className="container mx-auto px-6 relative">
+          <div className="text-center max-w-3xl mx-auto mb-20">
+            <h2 className="text-4xl font-bold text-white mb-6 relative">
+              <span className="absolute -inset-1 opacity-20 " />
+              <span className="relative">Revolutionary Learning Features</span>
+            </h2>
+            <p className="text-slate-400 text-lg">
+              Our platform combines cutting-edge AI technology with proven learning methodologies
+              to deliver an unmatched educational experience.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <Link to="/ats">
+            <FeatureCard
+              icon={Brain}
+              title="AI Learning Path"
+              description="Personalized learning journeys adapted to your pace and style"
+            />
+             </Link>
+             <Link to="/dashboard">
+            <FeatureCard
+              icon={Robot}
+              title="24/7 AI Tutor"
+              description="Get instant help and explanations from our advanced AI assistant"
+            />
             </Link>
             <Link to="/jobrole">
-                <FeatureCard
-                icon={BookOpen}
-                title="Learning Pathways"
-                description="Access customized learning resources and certification tracks"
-                />
+            <FeatureCard
+              icon={LineChart}
+              title="Progress Analytics"
+              description="Track your learning progress with detailed AI-powered insights"
+            />
             </Link>
             <Link to="/resume">
-                <FeatureCard
-                icon={FileText}
-                title="Smart Resume Builder"
-                description="Create ATS-optimized resumes with AI-powered suggestions"
-                />
-            
+            <FeatureCard
+              icon={Code}
+              title="Interactive Coding"
+              description="Learn programming with real-time feedback and code analysis"
+            />
             </Link>
-
-{/*Button*/}
-<div className="flex justify-center mt-8">
-            <button
-              onClick={() => navigate('/resume')}
-              className="relative group px-8 py-3 rounded-full bg-gradient-to-r from-indigo-600 via-blue-500 to-indigo-600 bg-size-200 hover:bg-right-bottom transition-all duration-500 overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
-              <div className="absolute inset-0 rounded-full border-2 border-indigo-400/30 backdrop-blur-sm" />
-              <div className="relative flex items-center justify-center gap-2 text-white font-medium tracking-wider">
-                <span className="group-hover:scale-110 transition-transform duration-500">
-                  Try AI Resume Builder
-                </span>
-                <span className="opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-500">
-                  →
-                </span>
-              </div>
-            </button>
-          </div>
-          {/*Button end*/}
+            <FeatureCard
+              icon={GraduationCap}
+              title="Smart Assessments"
+              description="Adaptive tests that evolve with your knowledge level"
+            />
+            <FeatureCard
+              icon={Lightbulb}
+              title="Knowledge Graph"
+              description="Visualize your learning journey and connect concepts"
+            />
           </div>
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-white">How It Works</h2>
-          <div className="flex flex-col md:flex-row items-center justify-between space-y-8 md:space-y-0 md:space-x-8">
-            {[1, 2, 3, 4].map((step) => (
-              <div key={step} className="flex flex-col items-center text-center">
-                <div className="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mb-4 shadow-lg shadow-indigo-600/20">
-                  {step}
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-white">
-                  {step === 1 && "Create Profile"}
-                  {step === 2 && "Get Matched"}
-                  {step === 3 && "Learn & Grow"}
-                  {step === 4 && "Succeed"}
-                </h3>
-                <p className="text-gray-400">
-                  {step === 1 && "Set up your professional profile"}
-                  {step === 2 && "Receive tailored job matches"}
-                  {step === 3 && "Access personalized learning"}
-                  {step === 4 && "Achieve your career goals"}
-                </p>
-              </div>
-            ))}
+      {/* How It Works Section */}
+      <section className="py-32 relative">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(120,119,198,0.15),transparent)]" />
+        <div className="container mx-auto px-6 relative">
+          <div className="text-center max-w-3xl mx-auto mb-20">
+            <h2 className="text-4xl font-bold text-white mb-6 relative">
+              <span className="absolute -inset-1" />
+              <span className="relative">How It Works</span>
+            </h2>
+            <p className="text-slate-400 text-lg">
+              Our AI-powered platform makes learning simple and effective
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <StepCard
+              number="1"
+              title="Create Profile"
+              description="Set up your personalized learning profile with AI-guided assistance"
+            />
+            <StepCard
+              number="2"
+              title="AI Analysis"
+              description="Our AI analyzes your goals and creates a custom learning path"
+            />
+            <StepCard
+              number="3"
+              title="Start Learning"
+              description="Access interactive courses and real-time AI tutoring"
+            />
+            <StepCard
+              number="4"
+              title="Track Progress"
+              description="Monitor your growth with advanced analytics and insights"
+            />
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="bg-gray-900/50 py-20">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-white">Success Stories</h2>
+      {/* Resume Builder Section */}
+      <section className="py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10" />
+        <div className="container mx-auto px-6 relative">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <div className="inline-flex items-center px-4 py-2 rounded-full bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 mb-8">
+                <FileText className="w-4 h-4 text-cyan-400 mr-2" />
+                <span className="text-sm text-slate-300">AI-Powered Resume Builder</span>
+              </div>
+              <h2 className="text-4xl font-bold text-white mb-6 relative">
+                <span className="absolute -inset-1" />
+                <span className="relative">Create Your Perfect Resume</span>
+              </h2>
+              <p className="text-slate-400 text-lg mb-8 leading-relaxed">
+                Let our AI help you craft a professional resume that stands out. Our intelligent system analyzes your experience and suggests improvements in real-time.
+              </p>
+              <ul className="space-y-4 mb-8">
+                {[
+                  "AI-powered content suggestions",
+                  "Professional templates",
+                  "Real-time formatting",
+                  "ATS-friendly designs"
+                ].map((feature, index) => (
+                  <li key={index} className="flex items-center text-slate-300">
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 flex items-center justify-center mr-3">
+                      <ArrowRight className="w-4 h-4 text-white" />
+                    </div>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <button onClick={() => navigate('/resume')} className="group relative px-8 py-4 rounded-xl overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 transition-transform duration-500 group-hover:scale-105" />
+                <span className="relative text-white font-semibold">Build Your Resume</span>
+              </button>
+            </div>
+            <div className="relative">
+              <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl opacity-20 blur-xl" />
+              <div className="relative bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-8">
+                <img
+                  src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=800&q=80"
+                  alt="Resume Builder"
+                  className="rounded-xl shadow-2xl"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-32 relative">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(120,119,198,0.15),transparent)]" />
+        <div className="container mx-auto px-6 relative">
+          <div className="text-center max-w-3xl mx-auto mb-20">
+            <h2 className="text-4xl font-bold text-white mb-6 relative">
+              <span className="absolute -inset-1" />
+              <span className="relative">Success Stories</span>
+            </h2>
+            <p className="text-slate-400 text-lg">
+              Hear from our learners who have transformed their careers with our platform
+            </p>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <TestimonialCard
-              name="Sarah Johnson"
+              name="Sarah Chen"
               role="Software Engineer"
-              quote="The AI-powered platform helped me identify and acquire the exact skills I needed to transition into tech."
+              quote="The AI-powered learning path helped me transition from marketing to software engineering in just 6 months. The personalized approach made all the difference."
               image="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80"
             />
             <TestimonialCard
-              name="Michael Chen"
-              role="Data Analyst"
-              quote="The personalized learning pathways were game-changing for my career progression."
+              name="Michael Rodriguez"
+              role="Data Scientist"
+              quote="The interactive courses and AI tutor were like having a personal mentor available 24/7. I went from beginner to landing my dream job."
               image="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
             />
             <TestimonialCard
-              name="Emily Rodriguez"
+              name="Emily Patel"
               role="Product Manager"
-              quote="Thanks to the AI job matching, I found my dream role at a top tech company."
+              quote="The resume builder and career guidance features were game-changers. The AI suggestions helped me highlight my achievements perfectly."
               image="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80"
             />
           </div>
@@ -186,44 +331,71 @@ function Landing() {
       {/* CTA Section */}
       <section className="py-20">
         <div className="container mx-auto px-6">
-          <div className="bg-gradient-to-r from-indigo-900 to-indigo-800 rounded-2xl p-12 text-center border border-indigo-700">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Start Your Career Journey Today
-            </h2>
-            <p className="text-indigo-200 text-xl mb-8">
-              Join thousands of professionals who've accelerated their careers with our AI-powered platform
-            </p>
-            <button className="bg-white text-indigo-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-50 transition-colors">
-              Get Started Free
-            </button>
+          <div className="relative overflow-hidden rounded-3xl">
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(120,119,198,0.3),transparent)]" />
+            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 opacity-20 blur-xl" />
+            <div className="relative p-16 backdrop-blur-xl">
+              <div className="text-center max-w-3xl mx-auto">
+                <Rocket className="w-16 h-16 text-cyan-400 mx-auto mb-8" />
+                <h2 className="text-4xl font-bold text-white mb-6">
+                  Ready to Transform Your Learning Journey?
+                </h2>
+                <p className="text-slate-300 text-lg mb-8">
+                  Join thousands of learners who are already experiencing the future of education.
+                  Start your journey today with a free trial.
+                </p>
+                <button className="group relative px-8 py-4 rounded-xl overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 transition-transform duration-500 group-hover:scale-105" />
+                  <span className="relative text-white font-semibold">Get Started Free</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-950 text-white py-12">
+      <footer className="border-t border-slate-800 py-12">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div>
-              <h3 className="font-bold text-xl mb-4">CareerAI</h3>
-              <p className="text-gray-400">Empowering careers through AI innovation</p>
+              <h3 className="font-bold text-xl text-white mb-4">Envision</h3>
+              <p className="text-slate-400">Transforming education through artificial intelligence</p>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Company</h4>
+              <h4 className="font-semibold text-white mb-4">Platform</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">About</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Careers</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+                <li><a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors duration-300">Features</a></li>
+                <li><a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors duration-300">Courses</a></li>
+                <li><a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors duration-300">Pricing</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Follow Us</h4>
+              <h4 className="font-semibold text-white mb-4">Company</h4>
+              <ul className="space-y-2">
+                <li><a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors duration-300">About</a></li>
+                <li><a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors duration-300">Blog</a></li>
+                <li><a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors duration-300">Careers</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-white mb-4">Connect</h4>
               <div className="flex space-x-4">
-                <a href="#" className="text-gray-400 hover:text-white"><Linkedin className="w-6 h-6" /></a>
-                <a href="#" className="text-gray-400 hover:text-white"><Twitter className="w-6 h-6" /></a>
-                <a href="#" className="text-gray-400 hover:text-white"><Facebook className="w-6 h-6" /></a>
+                <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors duration-300">
+                  <Github className="w-6 h-6" />
+                </a>
+                <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors duration-300">
+                  <Twitter className="w-6 h-6" />
+                </a>
+                <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors duration-300">
+                  <Linkedin className="w-6 h-6" />
+                </a>
               </div>
             </div>
+          </div>
+          <div className="mt-12 pt-8 border-t border-slate-800 text-center text-slate-400">
+            <p>&copy; 2024 Envision. All rights reserved.</p>
           </div>
         </div>
       </footer>
@@ -232,3 +404,8 @@ function Landing() {
 }
 
 export default Landing;
+
+
+         
+
+      
