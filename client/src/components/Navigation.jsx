@@ -56,7 +56,6 @@ function Navigation() {
                       <div 
                         className="font-semibold text-white text-lg cursor-pointer hover:text-indigo-200"
                         onClick={() => setShowJobsDropdown(!showJobsDropdown)}
-                        
                       >
                         {item.label}
                         {showJobsDropdown && (

@@ -223,7 +223,8 @@ def get_filtered_courses(request: FilterRequest):
 
     return {"courses": filtered_courses_list}
 
-# Define the API endpoint for quiz generation@app.post("/generate-quiz")
+# Define the API endpoint for quiz generation
+@app.post("/generate-quiz")
 async def generate_quiz(request: QuizRequest):
     try:
         with get_openai_callback() as cb:

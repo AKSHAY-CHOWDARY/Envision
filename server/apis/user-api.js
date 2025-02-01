@@ -49,7 +49,7 @@ userApp.post(
 userApp.post('/jobs', expressAsyncHandler(async (req, res) => {
 	let filters = req.body; 
 	try {
-		let response = await jobsObj.find({job_position:"Software Engineer"}).toArray()
+		let response = await jobsObj.find().toArray()
 		return res.send({ message: "All Jobs", payload: response });
 	} catch (err) {
 		console.log(err);
