@@ -120,9 +120,9 @@ const ChatBot = () => {
     <div className="fixed bottom-6 right-6 z-50">
       {!isOpen ? (
         <button
-          onClick={() => setIsOpen(true)}
-          className="bg-indigo-600 text-white rounded-full p-4 shadow-lg hover:bg-indigo-700 transition-all duration-300 flex items-center gap-2"
-        >
+        onClick={() => setIsOpen(true)}
+        className="bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 text-white rounded-full p-4 shadow-lg transition-all duration-300 flex items-center gap-2 
+            hover:p-5">
           <MessageCircle className="h-6 w-6" />
           <span className="text-sm font-medium">Chat with us</span>
         </button>
