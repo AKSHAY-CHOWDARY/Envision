@@ -44,7 +44,7 @@ const TestDetails = () => {
           }
         });
       }else {
-        throw new Error(response.data.message);
+        console.log(response.data.message);
       }
     } catch (error) {
       alert('Failed to generate questions. Please try again.');
