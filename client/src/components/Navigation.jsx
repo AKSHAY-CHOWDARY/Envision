@@ -17,7 +17,8 @@ function Navigation() {
       dropdownItems: [
         { label: 'Job Tracker', path: '/jobsTracker' },
         { label: 'Resume Tracker', path: '/ats' },
-        { label: 'Mock Interview', path: '/home' }
+        { label: 'Mock Interview', path: '/home' },
+        { label: 'Jobs', path: '/jobs' }
       ]
     },
     { label: 'Dashboard', path: '/dashboard' },
@@ -54,8 +55,8 @@ function Navigation() {
                     {item.dropdownItems ? (
                       <div 
                         className="font-semibold text-white text-lg cursor-pointer hover:text-indigo-200"
-                        onMouseEnter={() => setShowJobsDropdown(true)}
-                        onMouseLeave={() => setShowJobsDropdown(false)}
+                        onClick={() => setShowJobsDropdown(!showJobsDropdown)}
+                        
                       >
                         {item.label}
                         {showJobsDropdown && (
@@ -93,7 +94,7 @@ function Navigation() {
 
               {/* Mobile Navigation */}
               {isOpen && (
-                <div className="md:hidden absolute top-full left-0 right-0 bg-[#160637]  py-4 px-4">
+                <div className="md:hidden absolute top-full left-0 right-0 bg-[#160637]  py-4 px-4 ">
                   {navItems.map((item) => (
                     <div key={item.label} className="py-2">
                       {item.dropdownItems ? (

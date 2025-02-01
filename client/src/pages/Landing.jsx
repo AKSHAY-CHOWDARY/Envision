@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import {Link} from 'react-router-dom';
+import resume from '../assets/resume.jpg'
 
 function FeatureCard({ icon: Icon, title, description }) {
   return (
@@ -139,7 +140,7 @@ function Landing() {
         <div className="container mx-auto px-6 relative">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <StatCard number="50K+" label="Active Learners" />
-            <StatCard number="200+" label="AI-Powered Courses" />
+            <StatCard number="5000+" label="Courses" />
             <StatCard number="95%" label="Success Rate" />
             <StatCard number="24/7" label="AI Support" />
           </div>
@@ -164,41 +165,46 @@ function Landing() {
           <Link to="/ats">
             <FeatureCard
               icon={Brain}
-              title="AI Learning Path"
-              description="Personalized learning journeys adapted to your pace and style"
+              title="AI Job Matching"
+              description="Get personalized job recommendations based on your skills and preferences
+"
             />
              </Link>
              <Link to="/dashboard">
             <FeatureCard
               icon={Robot}
-              title="24/7 AI Tutor"
-              description="Get instant help and explanations from our advanced AI assistant"
+              title="Skill Gap Analysis"
+              description="Identify and bridge crucial skill gaps for your dream role"
             />
             </Link>
             <Link to="/jobrole">
             <FeatureCard
               icon={LineChart}
-              title="Progress Analytics"
-              description="Track your learning progress with detailed AI-powered insights"
+              title="Learning Pathways"
+              description="Access customized learning resources and certification tracks"
             />
             </Link>
             <Link to="/resume">
             <FeatureCard
               icon={Code}
-              title="Interactive Coding"
-              description="Learn programming with real-time feedback and code analysis"
+              title="Smart Resume builder"
+              description="Create ATS-optimized resumes with AI-powered suggestions"
             />
             </Link>
+            <Link to="/quiz">
             <FeatureCard
               icon={GraduationCap}
               title="Smart Assessments"
               description="Adaptive tests that evolve with your knowledge level"
             />
+            </Link>
+            <Link to="/home">
             <FeatureCard
               icon={Lightbulb}
-              title="Knowledge Graph"
-              description="Visualize your learning journey and connect concepts"
+              title="Mock Interviews"
+              description="Sharpen your interview skills with customized mock sessions aligned with your career path."
             />
+            </Link>
           </div>
         </div>
       </section>
@@ -274,15 +280,15 @@ function Landing() {
                 ))}
               </ul>
               <button onClick={() => navigate('/resume')} className="group relative px-8 py-4 rounded-xl overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 transition-transform duration-500 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-r cursor-pointer from-cyan-500 via-blue-500 to-purple-500 transition-transform duration-500 group-hover:scale-105" />
                 <span className="relative text-white font-semibold">Build Your Resume</span>
               </button>
             </div>
             <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl opacity-20 blur-xl" />
-              <div className="relative bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-8">
+              <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl opacity-20 w-[400px] blur-xl" />
+              <div className="relative bg-slate-800/50 backdrop-blur-xl rounded-2xl border w-[370px] border-slate-700/50 p-5 ">
                 <img
-                  src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=800&q=80"
+                  src={resume}
                   alt="Resume Builder"
                   className="rounded-xl shadow-2xl"
                 />
