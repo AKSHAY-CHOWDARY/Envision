@@ -117,7 +117,7 @@ const ChatBot = () => {
   }, [messages]);
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-6 right-6 z-50 ">
       {!isOpen ? (
         <button
         onClick={() => setIsOpen(true)}
@@ -127,8 +127,8 @@ const ChatBot = () => {
           <span className="text-sm font-medium">Chat with us</span>
         </button>
       ) : (
-        <div className="bg-white rounded-lg shadow-2xl w-[380px] h-[600px] flex flex-col">
-          <div className="bg-indigo-600 p-4 rounded-t-lg flex items-center justify-between">
+        <div className="bg-white rounded-lg shadow-2xl w-[380px] h-[550px] flex flex-col">
+          <div className="bg-[#160637] bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(140,100,220,0.3),rgba(255,255,255,0))] p-4 rounded-t-lg flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Bot className="h-6 w-6 text-white" />
               <h3 className="text-white font-medium">EnviBot</h3>
