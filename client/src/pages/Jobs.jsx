@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, MapPin, Clock, DollarSign, ChevronRight, Briefcase } from 'lucide-react';
+import { Search, MapPin, Clock, DollarSign, ChevronRight, ChevronLeft, Briefcase } from 'lucide-react';
 import JobList from '../components/JobList';
 import axios from 'axios';
 
@@ -13,7 +13,8 @@ function Jobs() {
     job_posting_date: 'all',
     sortBy: 'latest'
   });
-  const [showingResults, setShowingResults] = useState({ start: 1, end: 6, total: 10 });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [jobsPerPage] = useState(6);
 
   const datePostedOptions = [
     { id: 'all', name: 'All' },
@@ -33,8 +34,7 @@ function Jobs() {
           sortBy: filters.sortBy
         }
       });
-      console.log(response.data.payload); 
-      console.log(filters);
+
       if (response.data.message === "All Jobs" && Array.isArray(response.data.payload)) {
         let filteredJobs = response.data.payload;
         
@@ -75,17 +75,12 @@ function Jobs() {
         
         // Apply sorting
         filteredJobs.sort((a, b) => {
-          const dateA = new Date(a.posted).getTime();
-          const dateB = new Date(b.posted).getTime();
+          const dateA = new Date(a.job_posting_date).getTime();
+          const dateB = new Date(b.job_posting_date).getTime();
           return filters.sortBy === 'latest' ? dateB - dateA : dateA - dateB;
         });
         
         setJobs(filteredJobs);
-        setShowingResults({
-          start: 1,
-          end: Math.min(6, filteredJobs.length),
-          total: filteredJobs.length
-        });
       } else {
         setError('No jobs found');
         setJobs([]);
@@ -122,14 +117,32 @@ function Jobs() {
   // Get unique locations from jobs
   const locations = [...new Set(jobs.map(job => job.job_location))].filter(Boolean);
 
+  // Pagination logic
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
+  const totalPages = Math.ceil(jobs.length / jobsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(prevPage => prevPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(prevPage => prevPage - 1);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-5">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">Job Listings</h1>
+            <h1 className="text-2xl font-extrabold text-[#264A7A]">Job Listings</h1>
             <div className="text-sm text-gray-500">
-              Showing {showingResults.start}-{showingResults.end} of {showingResults.total} results
+              Showing {indexOfFirstJob + 1}-{Math.min(indexOfLastJob, jobs.length)} of {jobs.length} results
             </div>
           </div>
         </div>
@@ -216,25 +229,30 @@ function Jobs() {
                   </select>
                 </div>
 
-                {jobs.length === 0 ? (
+                {currentJobs.length === 0 ? (
                   <div className="text-center py-8 text-gray-500">
                     No jobs found matching your criteria
                   </div>
                 ) : (
-                  <JobList jobs={jobs} />
+                  <JobList jobs={currentJobs} />
                 )}
 
                 {jobs.length > 0 && (
                   <div className="flex justify-center mt-8">
                     <nav className="flex items-center gap-2">
-                      <button className="w-8 h-8 flex items-center justify-center border rounded-md bg-indigo-500 text-white">
-                        1
+                      <button
+                        onClick={handlePrevPage}
+                        disabled={currentPage === 1}
+                        className="w-8 h-8 flex items-center justify-center border rounded-md hover:bg-gray-50"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
                       </button>
-                      <button className="w-8 h-8 flex items-center justify-center border rounded-md hover:bg-gray-50">
-                        2
-                      </button>
-                      <button className="px-3 py-1 border rounded-md hover:bg-gray-50 flex items-center gap-1">
-                        Next
+                      <span className="px-3 py-1">{currentPage} of {totalPages}</span>
+                      <button
+                        onClick={handleNextPage}
+                        disabled={currentPage === totalPages}
+                        className="w-8 h-8 flex items-center justify-center border rounded-md hover:bg-gray-50"
+                      >
                         <ChevronRight className="w-4 h-4" />
                       </button>
                     </nav>
