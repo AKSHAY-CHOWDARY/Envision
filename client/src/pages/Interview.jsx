@@ -230,8 +230,8 @@ function Interview() {
   }
 
   return (
-    <div className="max-w-4xl mt-8 mx-auto mb-14">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="max-w-6xl mx-auto mt-44 mb-14 ">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ">
         {/* Question & Answer Card */}
         <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
           <div className="mb-6">
@@ -242,7 +242,7 @@ function Interview() {
               {mockQuestions[currentQuestion]}
             </h2>
           </div>
-          <div className="mb-5">
+          <div className="mb-10">
             <p className="text-gray-600 font-medium mb-2">Your Answer:</p>
             <div className="min-h-[120px] p-4 bg-gray-50 border border-gray-300 rounded-lg shadow-sm text-gray-700">
               {transcript || "Waiting for your response..."}
