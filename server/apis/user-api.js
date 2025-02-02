@@ -83,11 +83,8 @@ if (filters?.job_posting_date && filters.job_posting_date !== 'all') {
 	  query.date = { $gte: dateLimit};
 	}
   }
-  
-  
-		console.log(query);
 	  let jobs = await jobsObj.find(query).toArray();
-	  console.log(jobs)
+	 
 	  // Handle sorting
 	  if (filters?.sortBy) {
 		jobs.sort((a, b) => {

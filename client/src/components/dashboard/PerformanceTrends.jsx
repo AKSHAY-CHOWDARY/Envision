@@ -23,13 +23,16 @@ ChartJS.register(
   Filler
 );
 
-const PerformanceTrends = () => {
+const PerformanceTrends = ({ data: tests }) => {
+  const labels = tests.map((test, index) => `Test ${index + 1}`);
+  const scores = tests.map(test => (test.score/test.quiz.length)*100 || 0);
+
   const data = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    labels: labels,
     datasets: [
       {
         label: 'Performance Score',
-        data: [65, 70, 75, 72, 80, 85],
+        data: scores,
         borderColor: 'rgb(59, 130, 246)',
         backgroundColor: 'rgba(59, 130, 246, 0.1)',
         tension: 0.4,
