@@ -9,37 +9,11 @@ function Jobs() {
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
     search: '',
-    categories: [],
-    jobTypes: [],
-    experienceLevels: [],
-    datePosted: '',
-    salaryRange: { min: 0, max: 100000 }
+    job_location: '',
+    job_posting_date: 'all',
+    sortBy: 'latest'
   });
   const [showingResults, setShowingResults] = useState({ start: 1, end: 6, total: 10 });
-
-  // Categories data
-  const categories = [
-    { id: 'commerce', name: 'Commerce', count: 10 },
-    { id: 'telecommunications', name: 'Telecommunications', count: 10 },
-    { id: 'hotels-tourism', name: 'Hotels & Tourism', count: 10 },
-    { id: 'education', name: 'Education', count: 10 },
-    { id: 'financial-services', name: 'Financial Services', count: 10 }
-  ];
-
-  const jobTypes = [
-    { id: 'full-time', name: 'Full Time', count: 10 },
-    { id: 'part-time', name: 'Part Time', count: 10 },
-    { id: 'freelance', name: 'Freelance', count: 10 },
-    { id: 'seasonal', name: 'Seasonal', count: 10 },
-    { id: 'fixed-term', name: 'Fixed Term', count: 10 }
-  ];
-
-  const experienceLevels = [
-    { id: 'no-experience', name: 'No experience', count: 10 },
-    { id: 'fresher', name: 'Fresher', count: 10 },
-    { id: 'intermediate', name: 'Intermediate', count: 10 },
-    { id: 'expert', name: 'Expert', count: 10 }
-  ];
 
   const datePostedOptions = [
     { id: 'all', name: 'All' },
@@ -48,33 +22,82 @@ function Jobs() {
     { id: 'last-30-days', name: 'Last 30 Days' }
   ];
 
-  // Function to fetch jobs from your backend
   const fetchJobs = async () => {
     try {
       setLoading(true);
-      // Replace with your actual API endpoint
-
-      const response = await axios.post('http://localhost:5000/user-api/jobs', {filters});
-      console.log(filters);
-      if(response.data.message === "All Jobs"){
-        setJobs(response.data.payload);
-      }else{
-        setError('Failed to fetch jobs');
-      }
-      // Update showing results count
-      setShowingResults({
-        start: 1,
-        end: Math.min(6, data.length),
-        total: data.length
+      const response = await axios.post('http://localhost:5000/user-api/jobs', {
+        filters: {
+          search: filters.search,
+          job_location: filters.job_location,
+          job_posting_date: filters.job_posting_date,
+          sortBy: filters.sortBy
+        }
       });
+      console.log(response.data.payload); 
+      console.log(filters);
+      if (response.data.message === "All Jobs" && Array.isArray(response.data.payload)) {
+        let filteredJobs = response.data.payload;
+        
+        // Apply search filter
+        if (filters.search) {
+          filteredJobs = filteredJobs.filter(job => 
+            job.job_position?.toLowerCase().includes(filters.search.toLowerCase()) ||
+            job.company_name?.toLowerCase().includes(filters.search.toLowerCase())
+          );
+        }
+        
+        // Apply location filter
+        if (filters.job_location) {
+          filteredJobs = filteredJobs.filter(job => 
+            job.job_location === filters.job_location
+          );
+        }
+        
+        // Apply date filter
+        if (filters.job_posting_date !== 'all') {
+          const now = new Date();
+          filteredJobs = filteredJobs.filter(job => {
+            const job_posting_date = new Date(job.job_posting_date);
+            const hoursDiff = (now.getTime() - job_posting_date.getTime()) / (1000 * 60 * 60);
+            
+            switch (filters.job_posting_date) {
+              case 'last-24-hours':
+                return hoursDiff <= 24;
+              case 'last-7-days':
+                return hoursDiff <= 168;
+              case 'last-30-days':
+                return hoursDiff <= 720;
+              default:
+                return true;
+            }
+          });
+        }
+        
+        // Apply sorting
+        filteredJobs.sort((a, b) => {
+          const dateA = new Date(a.posted).getTime();
+          const dateB = new Date(b.posted).getTime();
+          return filters.sortBy === 'latest' ? dateB - dateA : dateA - dateB;
+        });
+        
+        setJobs(filteredJobs);
+        setShowingResults({
+          start: 1,
+          end: Math.min(6, filteredJobs.length),
+          total: filteredJobs.length
+        });
+      } else {
+        setError('No jobs found');
+        setJobs([]);
+      }
     } catch (err) {
-      setError('Failed to fetch jobs');
+      console.error('Error fetching jobs:', err);
+      setError('Failed to fetch jobs. Please try again later.');
+      setJobs([]);
     } finally {
       setLoading(false);
     }
   };
-
-  
 
   useEffect(() => {
     fetchJobs();
@@ -84,47 +107,20 @@ function Jobs() {
     setFilters(prev => ({ ...prev, search: e.target.value }));
   };
 
-  const handleCategoryChange = (category) => {
-    setFilters(prev => ({
-      ...prev,
-      categories: prev.categories.includes(category)
-        ? prev.categories.filter(c => c !== category)
-        : [...prev.categories, category]
-    }));
-  };
-
-  const handleJobTypeChange = (jobType) => {
-    setFilters(prev => ({
-      ...prev,
-      jobTypes: prev.jobTypes.includes(jobType)
-        ? prev.jobTypes.filter(t => t !== jobType)
-        : [...prev.jobTypes, jobType]
-    }));
-  };
-
-  const handleExperienceLevelChange = (level) => {
-    setFilters(prev => ({
-      ...prev,
-      experienceLevels: prev.experienceLevels.includes(level)
-        ? prev.experienceLevels.filter(l => l !== level)
-        : [...prev.experienceLevels, level]
-    }));
+  const handleLocationChange = (e) => {
+    setFilters(prev => ({ ...prev, job_location: e.target.value }));
   };
 
   const handleDatePostedChange = (date) => {
-    setFilters(prev => ({ ...prev, datePosted: date }));
+    setFilters(prev => ({ ...prev, job_posting_date: date }));
   };
 
-  const handleSalaryRangeChange = (e) => {
-    const value = parseInt(e.target.value);
-    setFilters(prev => ({
-      ...prev,
-      salaryRange: {
-        ...prev.salaryRange,
-        [e.target.name]: value
-      }
-    }));
+  const handleSortChange = (e) => {
+    setFilters(prev => ({ ...prev, sortBy: e.target.value }));
   };
+
+  // Get unique locations from jobs
+  const locations = [...new Set(jobs.map(job => job.job_location))].filter(Boolean);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -146,7 +142,7 @@ function Jobs() {
             {/* Search */}
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Search by Job Title
+                Search by Job Title or Company
               </label>
               <div className="relative">
                 <input
@@ -164,75 +160,17 @@ function Jobs() {
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <h3 className="font-medium text-gray-900 mb-3">Location</h3>
               <div className="relative">
-                <input
-                  type="text"
+                <select
+                  value={filters.job_location}
+                  onChange={handleLocationChange}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500"
-                  placeholder="Choose city..."
-                />
+                >
+                  <option value="">All Locations</option>
+                  {locations.map(job_location => (
+                    <option key={job_location} value={job_location}>{job_location}</option>
+                  ))}
+                </select>
                 <MapPin className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
-              </div>
-            </div>
-
-            {/* Categories */}
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="font-medium text-gray-900 mb-3">Category</h3>
-              <div className="space-y-2">
-                {categories.map(category => (
-                  <label key={category.id} className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={filters.categories.includes(category.id)}
-                        onChange={() => handleCategoryChange(category.id)}
-                        className="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
-                      />
-                      <span className="ml-2 text-gray-600">{category.name}</span>
-                    </div>
-                    <span className="text-gray-400 text-sm">{category.count}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            {/* Job Type */}
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="font-medium text-gray-900 mb-3">Job Type</h3>
-              <div className="space-y-2">
-                {jobTypes.map(type => (
-                  <label key={type.id} className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={filters.jobTypes.includes(type.id)}
-                        onChange={() => handleJobTypeChange(type.id)}
-                        className="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
-                      />
-                      <span className="ml-2 text-gray-600">{type.name}</span>
-                    </div>
-                    <span className="text-gray-400 text-sm">{type.count}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            {/* Experience Level */}
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="font-medium text-gray-900 mb-3">Experience Level</h3>
-              <div className="space-y-2">
-                {experienceLevels.map(level => (
-                  <label key={level.id} className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={filters.experienceLevels.includes(level.id)}
-                        onChange={() => handleExperienceLevelChange(level.id)}
-                        className="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
-                      />
-                      <span className="ml-2 text-gray-600">{level.name}</span>
-                    </div>
-                    <span className="text-gray-400 text-sm">{level.count}</span>
-                  </label>
-                ))}
               </div>
             </div>
 
@@ -246,7 +184,7 @@ function Jobs() {
                       <input
                         type="radio"
                         name="datePosted"
-                        checked={filters.datePosted === option.id}
+                        checked={filters.job_posting_date === option.id}
                         onChange={() => handleDatePostedChange(option.id)}
                         className="rounded-full border-gray-300 text-teal-600 focus:ring-teal-500"
                       />
@@ -256,75 +194,52 @@ function Jobs() {
                 ))}
               </div>
             </div>
-
-            {/* Salary Range */}
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="font-medium text-gray-900 mb-3">Salary Range</h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm text-gray-600">Min Salary</label>
-                  <input
-                    type="range"
-                    name="min"
-                    min="0"
-                    max="100000"
-                    step="1000"
-                    value={filters.salaryRange.min}
-                    onChange={handleSalaryRangeChange}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                  />
-                  <span className="text-sm text-gray-600">${filters.salaryRange.min}</span>
-                </div>
-                <div>
-                  <label className="text-sm text-gray-600">Max Salary</label>
-                  <input
-                    type="range"
-                    name="max"
-                    min="0"
-                    max="100000"
-                    step="1000"
-                    value={filters.salaryRange.max}
-                    onChange={handleSalaryRangeChange}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                  />
-                  <span className="text-sm text-gray-600">${filters.salaryRange.max}</span>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Job Listings */}
           <div className="lg:w-3/4">
             {loading ? (
               <div className="text-center py-8">Loading jobs...</div>
+            ) : error ? (
+              <div className="text-center py-8 text-red-600">{error}</div>
             ) : (
               <div className="space-y-4">
                 {/* Sort dropdown */}
                 <div className="flex justify-end mb-4">
-                  <select className="border border-gray-300 rounded-md px-3 py-1.5 focus:ring-teal-500 focus:border-teal-500">
-                    <option>Sort by latest</option>
-                    <option>Sort by relevance</option>
-                    <option>Sort by salary</option>
+                  <select
+                    value={filters.sortBy}
+                    onChange={handleSortChange}
+                    className="border border-gray-300 rounded-md px-3 py-1.5 focus:ring-teal-500 focus:border-teal-500"
+                  >
+                    <option value="latest">Sort by latest</option>
+                    <option value="oldest">Sort by oldest</option>
                   </select>
                 </div>
 
-                <JobList jobs={jobs} />
+                {jobs.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500">
+                    No jobs found matching your criteria
+                  </div>
+                ) : (
+                  <JobList jobs={jobs} />
+                )}
 
-                {/* Pagination */}
-                <div className="flex justify-center mt-8">
-                  <nav className="flex items-center gap-2">
-                    <button className="w-8 h-8 flex items-center justify-center border rounded-md bg-indigo-500 text-white">
-                      1
-                    </button>
-                    <button className="w-8 h-8 flex items-center justify-center border rounded-md hover:bg-gray-50">
-                      2
-                    </button>
-                    <button className="px-3 py-1 border rounded-md hover:bg-gray-50 flex items-center gap-1">
-                      Next
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
-                  </nav>
-                </div>
+                {jobs.length > 0 && (
+                  <div className="flex justify-center mt-8">
+                    <nav className="flex items-center gap-2">
+                      <button className="w-8 h-8 flex items-center justify-center border rounded-md bg-indigo-500 text-white">
+                        1
+                      </button>
+                      <button className="w-8 h-8 flex items-center justify-center border rounded-md hover:bg-gray-50">
+                        2
+                      </button>
+                      <button className="px-3 py-1 border rounded-md hover:bg-gray-50 flex items-center gap-1">
+                        Next
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                    </nav>
+                  </div>
+                )}
               </div>
             )}
           </div>

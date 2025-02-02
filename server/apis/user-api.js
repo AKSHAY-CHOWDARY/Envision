@@ -43,19 +43,67 @@ userApp.post(
 		}
 	})
 );
-
-//GET JOBS DATA FROM DB
-// IM USING POST BECAUSE IT WILL HELP YOU TO IMPLEMENT SEARCH AND OTHER FILTERS FUNCTIONALITY
+//jobs api
 userApp.post('/jobs', expressAsyncHandler(async (req, res) => {
-	let filters = req.body; 
+	const { filters } = req.body;
 	try {
-		let response = await jobsObj.find().toArray()
-		return res.send({ message: "All Jobs", payload: response });
-	} catch (err) {
-		console.log(err);
-		return res.send({ message: `Jobs not created ${err}` });
+	  let query = {};
+	  
+	  // Add search filter
+	  if (filters?.search) {
+		query.$or = [
+		  { job_position: { $regex: filters.search, $options: 'i' } },
+		  { company_name: { $regex: filters.search, $options: 'i' } }
+		];
+	  }
+	  
+	  // Add location filter
+	  if (filters?.job_location) {
+		query.job_location = filters.job_location;
+	  }
+	  
+// Add date filter
+if (filters?.job_posting_date && filters.job_posting_date !== 'all') {
+	const now = new Date();
+	let dateLimit;
+  
+	switch (filters.job_posting_date) {
+	  case 'last-24-hours':
+		dateLimit = new Date(now - 24 * 60 * 60 * 1000);
+		break;
+	  case 'last-7-days':
+		dateLimit = new Date(now - 7 * 24 * 60 * 60 * 1000);
+		break;
+	  case 'last-30-days':
+		dateLimit = new Date(now - 30 * 24 * 60 * 60 * 1000);
+		break;
 	}
-}));
+  
+	if (dateLimit) {
+	  query.date = { $gte: dateLimit};
+	}
+  }
+  
+  
+		console.log(query);
+	  let jobs = await jobsObj.find(query).toArray();
+	  console.log(jobs)
+	  // Handle sorting
+	  if (filters?.sortBy) {
+		jobs.sort((a, b) => {
+		  const dateA = new Date(a.posted).getTime();
+		  const dateB = new Date(b.posted).getTime();
+		  return filters.sortBy === 'latest' ? dateB - dateA : dateA - dateB;
+		});
+	  }
+	  
+	  return res.send({ message: "All Jobs", payload: jobs });
+	} catch (err) {
+	  console.error(err);
+	  return res.send({ message: `Error fetching jobs: ${err.message}` });
+	}
+  }));
+  
 
 //Send users LinkedIn data if present in DB
 userApp.get(
