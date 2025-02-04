@@ -150,85 +150,162 @@ userApp.post(
 userApp.post("/generate-resume", expressAsyncHandler(async (req, res) => {
     const { userData, additionalData } = req.body;
 
-    // Construct the prompt for generating the resume content
-    const prompt = `
-	   Enhance the user's resume details and return a valid JSON response *without any extra text or formatting* and add description to the project according to the title name and also for extracurriculars.
+   // Constructing the prompt
+const prompt = `
+Enhance the user's resume details and return a valid JSON response *without any extra text or formatting*.
+Add descriptions to projects and extracurriculars based on their titles and also add education which contains degree name ,institution and years details and change the about like career objective
+and for certifications and courses add ATS friendly text about the certification and categorize the skills into programming languages,Frameworks, technologies and non technical skills if present.
 
-        Name: ${userData.fullName}
-        Headline: ${userData.headline}
-        Location: ${userData.location}
-        About: ${userData.about}
-        Skills: ${additionalData.skills}
-        Education: ${userData.education}
-        Projects: ${additionalData.projects}
-        Courses: ${additionalData.courses}
-        Certifications: ${additionalData.certifications}
-        Extracurriculars: ${additionalData.extracurriculars}
-    `;
+Name: ${userData.fullName}
+Headline: ${userData.headline}
+Location: ${userData.location}
+About: ${userData.about}
+Skills: ${additionalData.skills}
+Education: ${userData.education}
+Projects: ${additionalData.projects}
+Courses: ${additionalData.courses}
+Certifications: ${additionalData.certifications}
+Extracurriculars: ${additionalData.extracurriculars}
+`;
 
-    try {
-        // Assuming the Gemini model has a 'generate()' or equivalent method
-        const aiResponse = await model.generateContent(
-            prompt
-        );
+try {
+const aiResponse = await model.generateContent(prompt);
+let rawText = aiResponse.response.text().trim();
 
-        const resumeContent = aiResponse.response.text();  // Assuming the text is in 'text' field
-		console.log(resumeContent);
-        // Use the generated content in your LaTeX resume template
-        const latexTemplate = `
-        \\documentclass[a4paper, 12pt]{article}
+// Extract only the JSON part
+const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+if (!jsonMatch) {
+	throw new Error("AI response does not contain valid JSON.");
+}
+
+let jsonText = jsonMatch[0];
+
+// Fix common JSON issues
+jsonText = jsonText
+	.replace(/,\s*}/g, "}") // Remove trailing commas in objects
+	.replace(/,\s*]/g, "]"); // Remove trailing commas in arrays
+
+const generatedResume = JSON.parse(jsonText);
+console.log("Generated Resume Data:", generatedResume);
+
+// Function to safely sanitize LaTeX special characters
+const sanitizeLatex = (input) => {
+    if (typeof input !== "string") return ""; // Ensure only strings are processed
+    return input
+        .replace(/&/g, "\\&")
+        .replace(/%/g, "\\%")
+        .replace(/_/g, "\\_")
+        .replace(/\$/g, "\\$")
+        .replace(/#/g, "\\#")
+        .replace(/{/g, "\\{")
+        .replace(/}/g, "\\}")
+        .replace(/\\/g, "\\textbackslash{}");
+};
+
+// Ensuring default values to prevent errors
+const safeArray = (arr) => Array.isArray(arr) ? arr : [];
+
+const latexTemplate = `
+\\documentclass[a4paper, 12pt]{article}
 \\usepackage{graphicx}
 \\usepackage{hyperref}
+\\usepackage{longtable} % For table formatting
+
 \\begin{document}
 
 % Title Section
 \\title{\\textbf{Resume}}
-\\author{\\textbf{Chenna Sanjana}}
+\\author{\\textbf{${sanitizeLatex(userData.fullName)}}}
 \\date{}
 \\maketitle
 
-% Personal Information
-\\section*{Personal Information}
-\\textbf{Headline:} Student at VNR VIGNANA JYOTHI INSTITUTE OF ENGINEERING AND TECHNOLOGY\\\
-\\textbf{Location:} Hyderabad, Telangana, India\\
-\\textbf{About:} Student at VNR VIGNANA JYOTHI INSTITUTE OF ENGINEERING AND TECHNOLOGY pursuing a degree from 2022-2026.
 
-% Skills
-\\section*{Skills}
-\\begin{itemize}
-    \\item UI/UX
-\\end{itemize}
 
-% Education
+% About
+\\section*{About}
+${sanitizeLatex(generatedResume.about || "")}
+
+% Education Section
 \\section*{Education}
-\\begin{itemize}
-    \\item \\textbf{VNR VIGNANA JYOTHI INSTITUTE OF ENGINEERING AND TECHNOLOGY} (2022-2026)
-\\end{itemize}
+\\renewcommand{\\arraystretch}{1.3} % Increases row height for better readability
+\\begin{longtable}{|p{4cm}|p{7cm}|p{3cm}|} % Adjust column width
+    \\hline
+    \\textbf{Degree} & \\textbf{Institution} & \\textbf{Years} \\\\ 
+    \\hline
+    ${safeArray(generatedResume.education).map(edu => 
+        `${sanitizeLatex(edu.degree || "N/A")} & ${sanitizeLatex(edu.institution || "N/A")} & ${sanitizeLatex(edu.years || "N/A")} \\\\ \\hline`
+    ).join("\n")}
+\\end{longtable}
 
-% Projects
-\\section*{Projects}
+% Certifications
+\\section*{Certifications}
 \\begin{itemize}
-    \\item \\textbf{Car Pooling Project}\\
-    A project focused on developing a carpooling system. Further details on functionality and technologies used would strengthen this section.
+    ${safeArray(generatedResume.certifications).map(cert => 
+        `\\item \\textbf{${sanitizeLatex(cert.title || "Untitled")}}: ${sanitizeLatex(cert.description || "No description")}`
+    ).join("\n")}
 \\end{itemize}
 
 % Courses
 \\section*{Courses}
 \\begin{itemize}
-    \\item Core Java
+    ${safeArray(generatedResume.courses).map(cou => 
+        `\\item \\textbf{${sanitizeLatex(cou.title || "Untitled")}}: ${sanitizeLatex(cou.description || "No description")}`
+    ).join("\n")}
 \\end{itemize}
 
-% Extracurricular Activities
-\\section*{Extracurricular Activities}
+% Skills Section
+\\section*{Skills}
 \\begin{itemize}
-    \\item \\textbf{Club Member (Technical)}\\
-    Member of a technical club, contributing to projects or events. Adding specifics about club name and contributions would be beneficial.
+    ${generatedResume.skills.programmingLanguages.length ? `
+    \\item \\textbf{Programming Languages:}
+   
+        ${generatedResume.skills.programmingLanguages.map(skill => ` ${sanitizeLatex(skill)}`).join(", ")}
+ 
+    ` : ''}
+
+    ${generatedResume.skills.frameworks.length ? `
+    \\item \\textbf{Frameworks:}
+    
+        ${generatedResume.skills.frameworks.map(skill => `${sanitizeLatex(skill)}`).join(", ")}
+  
+    ` : ''}
+
+    ${generatedResume.skills.technologies.length ? `
+    \\item \\textbf{Technologies:}
+    
+        ${generatedResume.skills.technologies.map(skill => ` ${sanitizeLatex(skill)}`).join(", ")}
+  
+    ` : ''}
+
+    ${generatedResume.skills.nonTechnicalSkills.length ? `
+    \\item \\textbf{Non-Technical Skills:}
+   
+        ${generatedResume.skills.nonTechnicalSkills.map(skill => ` ${sanitizeLatex(skill)}`).join(", ")}
+   
+    ` : ''}
+\\end{itemize}
+
+% Projects
+\\section*{Projects}
+\\begin{itemize}
+    ${safeArray(generatedResume.projects).map(proj => 
+        `\\item \\textbf{${sanitizeLatex(proj.title || "Untitled")}}: ${sanitizeLatex(proj.description || "No description")}`
+    ).join("\n")}
+\\end{itemize}
+
+
+% Extracurriculars
+\\section*{Extracurriculars}
+\\begin{itemize}
+    ${safeArray(generatedResume.extracurriculars).map(extra => 
+        `\\item \\textbf{${sanitizeLatex(extra.title || "Untitled")}}: ${sanitizeLatex(extra.description || "No description")}`
+    ).join("\n")}
 \\end{itemize}
 
 \\end{document}
-		`
-    ;
+`;
 
+console.log("Generated LaTeX Resume:", latexTemplate);
 
 
         fs.writeFileSync("resume.tex", latexTemplate);

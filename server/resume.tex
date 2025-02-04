@@ -1,7 +1,9 @@
 
-        \documentclass[a4paper, 12pt]{article}
+\documentclass[a4paper, 12pt]{article}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{longtable} % For table formatting
+
 \begin{document}
 
 % Title Section
@@ -10,42 +12,83 @@
 \date{}
 \maketitle
 
-% Personal Information
-\section*{Personal Information}
-\textbf{Headline:} Student at VNR VIGNANA JYOTHI INSTITUTE OF ENGINEERING AND TECHNOLOGY\\textbf{Location:} Hyderabad, Telangana, India\
-\textbf{About:} Student at VNR VIGNANA JYOTHI INSTITUTE OF ENGINEERING AND TECHNOLOGY pursuing a degree from 2022-2026.
 
-% Skills
-\section*{Skills}
-\begin{itemize}
-    \item UI/UX
-\end{itemize}
 
-% Education
+% About
+\section*{About}
+Highly motivated and results-oriented student pursuing a Bachelor of Technology at VNR VIGNANA JYOTHI INSTITUTE OF ENGINEERING AND TECHNOLOGY (2022-2026) with a strong interest in software development and data science. Seeking an entry-level position to leverage my skills and contribute to a dynamic team.
+
+% Education Section
 \section*{Education}
-\begin{itemize}
-    \item \textbf{VNR VIGNANA JYOTHI INSTITUTE OF ENGINEERING AND TECHNOLOGY} (2022-2026)
-\end{itemize}
+\renewcommand{\arraystretch}{1.3} % Increases row height for better readability
+\begin{longtable}{|p{4cm}|p{7cm}|p{3cm}|} % Adjust column width
+    \hline
+    \textbf{Degree} & \textbf{Institution} & \textbf{Years} \\ 
+    \hline
+    Bachelor of Technology & VNR VIGNANA JYOTHI INSTITUTE OF ENGINEERING AND TECHNOLOGY & 2022-2026 \\ \hline
+\end{longtable}
 
-% Projects
-\section*{Projects}
+% Certifications
+\section*{Certifications}
 \begin{itemize}
-    \item \textbf{Car Pooling Project}\
-    A project focused on developing a carpooling system. Further details on functionality and technologies used would strengthen this section.
+    \item \textbf{WEB ALCHEMY}: Certification demonstrating proficiency in web development technologies and principles.
+\item \textbf{SIH Special Appreciation}: Recognition received for participation and contribution in Smart India Hackathon.
 \end{itemize}
 
 % Courses
 \section*{Courses}
 \begin{itemize}
-    \item Core Java
+    \item \textbf{Core Java}: Comprehensive course covering fundamental and advanced concepts of Java programming.
+\item \textbf{Supervised Machine Learning}: Course focused on supervised learning algorithms, their implementation, and application to various datasets.
+\item \textbf{AWS Cloud Services}: Course covering the fundamental services offered by Amazon Web Services (AWS), potentially including compute, storage, and database services.
 \end{itemize}
 
-% Extracurricular Activities
-\section*{Extracurricular Activities}
+% Skills Section
+\section*{Skills}
 \begin{itemize}
-    \item \textbf{Club Member (Technical)}\
-    Member of a technical club, contributing to projects or events. Adding specifics about club name and contributions would be beneficial.
+    
+    \item \textbf{Programming Languages:}
+   
+         C,  C++,  Python
+ 
+    
+
+    
+    \item \textbf{Frameworks:}
+    
+        Node.js
+  
+    
+
+    
+    \item \textbf{Technologies:}
+    
+         MySQL,  Windows,  AWS Cloud Services
+  
+    
+
+    
+    \item \textbf{Non-Technical Skills:}
+   
+         Teamwork,  Figma
+   
+    
+\end{itemize}
+
+% Projects
+\section*{Projects}
+\begin{itemize}
+    \item \textbf{Car Pooling}: Developed a system to connect people for shared rides, potentially focusing on aspects like route optimization, user matching, and payment integration.
+\item \textbf{Earthquake Forecasting Model}: Built a predictive model to forecast earthquakes using machine learning techniques, potentially involving data analysis, model training, and evaluation.
+\end{itemize}
+
+
+% Extracurriculars
+\section*{Extracurriculars}
+\begin{itemize}
+    \item \textbf{Club Member}: Contributed to the activities and goals of a club, demonstrating teamwork and commitment.
+\item \textbf{Event Organiser}: Successfully planned and executed events, showcasing organizational and leadership skills.
+\item \textbf{NGO Fund Raising}: Participated in fundraising activities for a non-profit organization, demonstrating social responsibility and initiative.
 \end{itemize}
 
 \end{document}
-		
