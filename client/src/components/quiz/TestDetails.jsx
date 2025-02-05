@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Clock, FileText, AlertCircle, ChevronDown } from 'lucide-react';
+import { Clock, FileText, AlertCircle, ChevronDown, Loader } from 'lucide-react';
 import {useUser} from '@clerk/clerk-react';
 import axios from 'axios';
+import QuizLoader from '../../skeletons/QuizLoader';
 
 
 const TestDetails = () => {
@@ -52,7 +53,7 @@ const TestDetails = () => {
       setIsLoading(false);
     }
   };
-
+  
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-3xl mx-auto">
@@ -116,7 +117,7 @@ const TestDetails = () => {
             disabled={isLoading}
             className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-300"
           >
-            {isLoading ? 'Preparing Test...' : 'Start Assessment →'}
+            {isLoading ? <QuizLoader/> : 'Start Assessment →'}
           </button>
         </div>
       </div>

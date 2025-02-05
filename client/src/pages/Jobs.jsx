@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Search, MapPin, Clock, DollarSign, ChevronRight, ChevronLeft, Briefcase } from 'lucide-react';
 import JobList from '../components/JobList';
 import axios from 'axios';
+import JobsSkeleton from '../skeletons/JobsSkeleton';
 
 function Jobs() {
   const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  let [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
     search: '',
@@ -212,7 +213,7 @@ function Jobs() {
           {/* Job Listings */}
           <div className="lg:w-3/4">
             {loading ? (
-              <div className="text-center py-8">Loading jobs...</div>
+              <div className="text-center py-8"><JobsSkeleton/></div>
             ) : error ? (
               <div className="text-center py-8 text-red-600">{error}</div>
             ) : (
