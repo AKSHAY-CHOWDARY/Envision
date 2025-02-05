@@ -107,7 +107,7 @@ const TestDetails = () => {
                 <option value="Intermediate">Intermediate (2-5 years)</option>
                 <option value="Senior">Senior (5+ years)</option>
               </select>
-              <ChevronDown className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
+              
             </div>
           </div>
 

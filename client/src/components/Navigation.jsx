@@ -30,9 +30,9 @@ function Navigation() {
       <div className="bg-[#160637] bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(140,100,220,0.3),rgba(255,255,255,0))] fixed top-0 w-full z-50 py-4">
         <div className="max-w-7xl mx-auto px-4">
           <SignedOut>
-            <div className="flex justify-end space-x-3">
-              <button className="font-semibold px-4 bg-white rounded-md py-2"><SignInButton/></button>
-              <button className="font-semibold px-4 bg-white rounded-md py-2"><SignUpButton/></button>
+            <div className="flex justify-end space-x-3 ">
+              <button className="font-semibold px-4 bg-indigo-200 hover:bg-indigo-400 hover:text-indigo-950 hover:pt-1 rounded-md py-2"><SignInButton/></button>
+              <button className="font-semibold px-4 bg-indigo-200  hover:bg-indigo-400 hover:text-indigo-950 hover:pt-1 rounded-md py-2"><SignUpButton/></button>
             </div>
           </SignedOut>
 

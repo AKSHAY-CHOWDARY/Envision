@@ -284,7 +284,7 @@ function Landing() {
                 <span className="relative text-white font-semibold">Build Your Resume</span>
               </button>
             </div>
-            <div className="relative">
+            <div className="relative mx-auto">
               <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl opacity-20 w-[400px] blur-xl" />
               <div className="relative bg-slate-800/50 backdrop-blur-xl rounded-2xl border w-[370px] border-slate-700/50 p-5 ">
                 <img

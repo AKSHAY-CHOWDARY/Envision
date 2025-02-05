@@ -24,18 +24,19 @@ function Dashboard() {
 
   const { user } = useUser();
   const userId = user?.id;
+  const [testsData, setTestsData] = useState([]);
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/test-api/get-all-tests/${userId}`);
         const tests = response.data.tests || [];
-
+        setTestsData(tests);
         if (tests.length > 0) {
           const totalTests = tests.length;
           const totalScore = tests.reduce((acc, test) => acc + (test.score || 0), 0);
           const totalAccuracy = tests.reduce((acc, test) => {
-            return acc + (test.quiz?.length ? (test.score / test.quiz.length) * 100 : 0);
+            return acc + (test.quiz?.length ? (test.score ? test.score : 0) / test.quiz.length * 100 : 0);
           }, 0);
 
           const currentMonth = new Date().getMonth();
@@ -43,13 +44,23 @@ function Dashboard() {
             const testMonth = new Date(test.date).getMonth();
             return testMonth === currentMonth;
           }).length;
-          
+
+          const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+          const lastMonthTests = tests.filter(test => {
+            const testMonth = new Date(test.date).getMonth();
+            return testMonth === lastMonth;
+          });
+
+          const lastMonthScore = lastMonthTests.reduce((acc, test) => acc + (test.score || 0), 0);
+          const lastMonthAverage = lastMonthTests.length ? (lastMonthScore / lastMonthTests.length) : 0;
+          const currentMonthAverage = totalTests ? (totalScore / totalTests) : 0;
+          const improvement = lastMonthAverage ? ((currentMonthAverage - lastMonthAverage) / lastMonthAverage * 100).toFixed(2) : 0;
 
           setStats({
             testsTaken: totalTests,
-            averageScore: totalTests ? (totalScore / totalTests).toFixed(2) : 0,
+            averageScore: totalTests ? (totalScore / totalTests).toFixed(2) * 100 : 0,
             accuracyRate: totalTests ? (totalAccuracy / totalTests).toFixed(2) : 0,
-            improvement: (Math.random() * 10 + 5).toFixed(2),
+            improvement: improvement,
             testsTakenThisMonth: testsThisMonth,
           });
         }
@@ -125,7 +136,7 @@ function Dashboard() {
           />
           <StatCard
             title="Improvement"
-            value={`+${stats.improvement}%`}
+            value={stats.improvement!=0?`+${stats.improvement}%`:"No tests taken last month"}
             icon={ArrowTrendingUpIcon}
             trend="Consistently rising"
             color="indigo"
@@ -146,7 +157,7 @@ function Dashboard() {
             whileHover={{ scale: 1.02 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <PerformanceTrends />
+            <PerformanceTrends data={testsData} />
           </motion.div>
         </div>
 

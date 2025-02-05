@@ -27,6 +27,7 @@ function App() {
 	return (
 		<div>
 			<Navigation/>
+			<div className="mt-14">
 			<Routes> 
 				<Route path="/" element={<Landing />} />
 				<Route path="/jobs" element={<ProtectPage><Jobs /></ProtectPage>} />
@@ -45,6 +46,7 @@ function App() {
 				<Route path="/interview" element={<Interview />} />
 				<Route path="/history" element={<History />} />
 			</Routes>
+			</div>
 			<SignedIn>
 				<ChatBot/>
 			</SignedIn>
