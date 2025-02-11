@@ -1,5 +1,6 @@
 import React from 'react';
 import { Briefcase, MapPin, Clock, DollarSign } from 'lucide-react';
+import CopyToClipboard from './copyToClipboard';
 
 const JobCard = ({ job }) => (
   <div className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
@@ -17,6 +18,11 @@ const JobCard = ({ job }) => (
             <span className="flex items-center gap-1">
               <Clock className="w-4 h-4" />
               {job.job_posting_date}
+            </span>
+            <span className='flex items-center gap-1'>
+              <p className='font-semibold'>Job Id</p>
+                {/* CLIPBOARD */}
+              <CopyToClipboard text={job.job_id}/>
             </span>
           </div>
         </div>
