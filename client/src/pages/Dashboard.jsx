@@ -212,14 +212,14 @@ function Dashboard() {
 					</motion.div>
 				</div>
 
-				{/* Subject Analysis */}
+				{/* Subject Analysis
 				<motion.div
 					className="mb-8 chart-container"
 					whileHover={{ scale: 1.01 }}
 					transition={{ type: "spring", stiffness: 300 }}
 				>
 					<SubjectAnalysis />
-				</motion.div>
+				</motion.div> */}
 
 				<Top5Courses courses={courses} />
 			</motion.div>

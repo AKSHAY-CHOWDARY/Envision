@@ -6,8 +6,6 @@ const axios = require("axios");
 
 const jobs_key = process.env.LINKEDIN_JOBS_API_KEY;
 
-require("dotenv").config();
-
 //body parser
 adminApp.use(exp.json());
 
@@ -49,7 +47,7 @@ adminApp.post(
             console.error("Error occurred:", err);
 
             // Return error response with detailed message
-            return res.status(500).send({ message: `Jobs not created: ${err.message}` });
+            return res.status(500).send({ message: `Jobs not created: ${err.data.data.message}` });
         }
     })
 );
