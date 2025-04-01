@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import ReactMarkdown from "react-markdown";
+
 
 function ATSResumeTracker() {
   const [jobDescription, setJobDescription] = useState("");
@@ -40,7 +42,7 @@ function ATSResumeTracker() {
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-8">
+          <div className="bg-[#160637] bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(140,100,220,0.3),rgba(255,255,255,0))]  px-6 py-8">
             <h1 className="text-3xl font-bold text-center text-white">
               ATS Resume Scanner
             </h1>
@@ -128,7 +130,7 @@ function ATSResumeTracker() {
 
               {/* Submit Button */}
               <button
-                className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="w-full py-4 bg-[#160637] bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(140,100,220,0.3),rgba(255,255,255,0))]  text-white font-medium rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 onClick={handleSubmit}
                 disabled={isLoading}
               >
@@ -152,7 +154,9 @@ function ATSResumeTracker() {
                   </h4>
                   <div className="prose max-w-none">
                     <pre className="whitespace-pre-wrap text-gray-700 text-sm">
+                      <ReactMarkdown>
                       {response}
+                      </ReactMarkdown>
                     </pre>
                   </div>
                 </div>
