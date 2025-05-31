@@ -6,7 +6,7 @@ Envision is a comprehensive career enhancement platform.
 ## Video Tutorial
 Watch the complete tutorial on how to use Envision here:
 
-[Envision Video Tutorial](https://drive.google.com/file/d/1FjixX09_OA17iLqmAJV_Dvtlhm60dPij/view?usp=sharing)
+[Envision Video Tutorial](https://drive.google.com/file/d/13moEprl603wTpICf0RgP-v49GJKTEmrC/view?usp=sharing)
 
 ## Installation
 To get started with Envision, follow these steps:
